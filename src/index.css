@@ -1,0 +1,193 @@
+:root {
+  /* ==========================================
+     MYSTIC MITHI - EDITORIAL LITERARY / WELLNESS PALETTE
+     (Inspired directly by inspiration.webp)
+     ========================================== */
+
+  /* 🟠 Primary & Terracotta Accents */
+  --primary: #E06236;
+  /* Warm terracotta / burnt orange */
+  --primary-dark: #C95026;
+  /* Darker terracotta on hover */
+  --navy-blue: #181818;
+  /* Deep inky charcoal */
+  --navy-dark: #121212;
+  /* Pure deep dark charcoal */
+
+  /* 🌿 Neutral Accents */
+  --secondary: #262626;
+  --accent: #E06236;
+  --accent-light: #FAF1EB;
+  /* Warm terracotta soft tint */
+  --accent-gold: #C49A45;
+  --accent-beige: #EBE4DA;
+  /* Warm neutral block */
+
+  /* ⚪ Background Colors */
+  --bg-main: #FAF7F2;
+  /* Warm paper / cream background */
+  --bg-card: #FFFFFF;
+  /* Pure white cards */
+  --bg-secondary: #F1ECE3;
+  /* Secondary warm block */
+  --bg-glass: rgba(250, 247, 242, 0.9);
+
+  /* ⚫ Text Colors */
+  --text-heading: #121212;
+  /* Deep black charcoal */
+  --text-body: #4A4A4A;
+  /* High-legibility neutral */
+  --text-secondary: #6B6661;
+  --text-muted: #8C8680;
+  --text-brand: #E06236;
+
+  /* 🟤 Borders */
+  --border-gold: #D8CEBE;
+  --border-ui: #E5DFD6;
+  /* Subtle warm border */
+
+  /* ==========================================
+     TYPOGRAPHY & UTILITIES
+     ========================================== */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-cinzel: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-numbers: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+
+  --shadow-sm: 0 2px 6px rgba(9, 56, 25, 0.04);
+  --shadow-md: 0 8px 24px -4px rgba(9, 56, 25, 0.08);
+  --shadow-lg: 0 20px 40px -8px rgba(9, 56, 25, 0.12);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Reset & Global Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  background-color: var(--bg-main);
+  color: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-optical-sizing: auto;
+  color: var(--text-heading);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+a {
+  color: var(--text-brand);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Global Reusable Utility Classes */
+.bg-primary {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+
+.bg-primary-dark {
+  background-color: var(--primary-dark) !important;
+  color: white !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary) !important;
+  color: white !important;
+}
+
+.bg-accent-light {
+  background-color: var(--accent-light) !important;
+}
+
+.bg-accent-beige {
+  background-color: var(--accent-beige) !important;
+}
+
+.bg-card {
+  background-color: var(--bg-card) !important;
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-brand {
+  color: var(--text-brand) !important;
+}
+
+.text-heading {
+  color: var(--text-heading) !important;
+}
+
+.text-body {
+  color: var(--text-body) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-gold {
+  color: var(--accent-gold) !important;
+}
+
+.border-gold {
+  border: 1px solid var(--border-gold) !important;
+}
+
+.border-ui {
+  border: 1px solid var(--border-ui) !important;
+}

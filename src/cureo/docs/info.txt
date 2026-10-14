@@ -1,0 +1,43 @@
+
+Dibrugarh, Assam India, 786001
+Contact info
+
+Dr Niharika Bezboruah
+Bachelor of homoeopathic medicine and surgery
+
++91 70029 74378
+
+Website color and theme
+
+| Category            | Purpose                      | Color Name        | Hex       |
+| ------------------- | ---------------------------- | ----------------- | --------- |
+| 🟢 **Primary**      | Main brand color             | Deep Forest Green | `#093819` |
+| 🟢 **Primary**      | Primary hover / darker UI    | Dark Forest Green | `#062B13` |
+| 🟢 **Secondary**    | Secondary brand elements     | Natural Green     | `#1E5725` |
+| 🟢 **Accent**       | Highlights & active elements | Fresh Leaf Green  | `#41763E` |
+| 🌿 **Light Accent** | Soft backgrounds             | Soft Sage         | `#C1D8B9` |
+| 🟤 **Accent**       | Premium / decorative details | Warm Olive Gold   | `#675B3E` |
+| 🟡 **Light Accent** | Subtle decorative areas      | Soft Beige        | `#BDB9A2` |
+| ⚪ **Background**    | Main website background      | Warm Off-White    | `#F6F4F5` |
+| ⚪ **Background**    | Cards / sections             | Pure White        | `#FFFFFF` |
+| ⚫ **Text**          | Main headings                | Deep Charcoal     | `#191F17` |
+| ⚫ **Text**          | Body / paragraph text        | Soft Charcoal     | `#343A35` |
+| ⚫ **Text**          | Secondary text               | Muted Charcoal    | `#606760` |
+| ⚫ **Text**          | Placeholder / disabled text  | Light Gray        | `#8A918B` |
+| 🟢 **Text**         | Green text / links           | Brand Green       | `#1E5725` |
+| 🟤 **Border**       | Gold decorative borders      | Olive Border      | `#B0A984` |
+| ⚪ **Border**        | Normal UI borders            | Soft Gray         | `#DDE1DD` |
+
+
+
+
+For Skin, Piles & Digestive concerns, kindly WhatsApp for an appointment—direct calls or consultations without prior booking will not be attended.
+ঘৰুৱা উপায়ে অলপ আৰাম দিয়ে… কিন্তু সমস্যাটো বাৰে বাৰে ঘূৰি আহে নেকি? 🤔
+কেৱল লক্ষণটো কমোৱাই নহয়—কিয় বাৰে বাৰে হৈছে, সেই কাৰণটো বুজাটোও জৰুৰী।
+Repeated piles বা digestive discomfort থাকিলে proper consultation কৰাওক। 
+Sitting all day? Your daily habits may be affecting your bowel health more than you realize. Small changes can make a difference
+
+হোমিঅ’পেথিয়ে কেৱল বিষ কমোৱাতেই লক্ষ্য নাৰাখে। লক্ষ্য থাকে—যি কাৰণত বাৰে বাৰে সমস্যা ঘূৰি আহে, সেই মূল সমস্যাটো বুজি চিকিৎসা আগবঢ়োৱা।
+প্ৰত্যেকজন ৰোগীৰ লক্ষণ, শাৰীৰিক গঠন, মানসিক অৱস্থা আৰু ৰোগৰ ধৰণ বেলেগ। সেইবাবেই একে ৰোগ হ’লেই সকলোৰে বাবে একে ঔষধ নহয়।
+সঠিক কেছ-টেকিং আৰু চিকিৎসকৰ মূল্যায়নৰ পিছত নিৰ্বাচিত ঔষধে শৰীৰৰ নিজস্ব সুস্থ হোৱাৰ প্ৰক্ৰিয়াক সহায় কৰে। সেইকাৰণেই বহু ক্ষেত্ৰত কেৱল অস্থায়ী আৰাম নহয়, সমস্যাৰ পুনৰাবৃত্তি কমোৱাটোও লক্ষ্য থাকে।
+যদি আপোনাৰ সমস্যা বাৰে বাৰে ঘূৰি আহিছে বা দীঘলীয়া সময় ধৰি আছে, তেন্তে নিজে নিজে ঔষধ নাখাই, প্ৰথমে সঠিকভাৱে কনছাল্টেশ্যন কৰক
