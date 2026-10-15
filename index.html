@@ -51,14 +51,17 @@
       transform: translateY(-100%);
       visibility: hidden;
     }
+    /* Hold every animation until the signature font is ready (the inline script below adds .mm-pl-play) */
+    #mm-preloader * { animation-play-state: paused; }
+    #mm-preloader.mm-pl-play * { animation-play-state: running; }
     .mm-pl-sign {
       position: relative;
       display: inline-block;
-      padding: 0 0.15em;
     }
-    /* Signature reveals left to right, as if being written */
+    /* Signature reveals left to right, as if being written (padding keeps the script swashes inside the clip) */
     .mm-pl-logo {
       display: block;
+      padding: 0 0.2em;
       font-family: 'Great Vibes', 'Brush Script MT', cursive;
       font-size: clamp(3.2rem, 9vw, 5rem);
       line-height: 1.25;
@@ -129,6 +132,24 @@
       <span class="mm-pl-nib"></span>
     </div>
   </div>
+  <script>
+    // Start writing the signature only once its font has loaded (capped so a slow network never stalls the page),
+    // then expose a promise that resolves after the full signature has been written and held on screen.
+    (function () {
+      var FONT_TIMEOUT_MS = 3000;
+      var WRITE_MS = 1150; // .mm-pl-logo animation: 0.15s delay + 1s
+      var HOLD_MS = 450;
+      var preloader = document.getElementById('mm-preloader');
+      var fontReady = document.fonts && document.fonts.load
+        ? document.fonts.load('1em "Great Vibes"', 'Mystic Mithi').catch(function () {})
+        : Promise.resolve();
+      var fontTimeout = new Promise(function (resolve) { setTimeout(resolve, FONT_TIMEOUT_MS); });
+      window.mmPreloaderShown = Promise.race([fontReady, fontTimeout]).then(function () {
+        preloader.classList.add('mm-pl-play');
+        return new Promise(function (resolve) { setTimeout(resolve, WRITE_MS + HOLD_MS); });
+      });
+    })();
+  </script>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
