@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
-import { FaBookOpen, FaXmark } from 'react-icons/fa6'
-import { FiMenu } from 'react-icons/fi'
+import { FaXmark, FaInstagram, FaFacebookF, FaWhatsapp } from 'react-icons/fa6'
+import { useCart } from '../cart/useCart'
+import { FiMenu, FiShoppingBag } from 'react-icons/fi'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { count, openDrawer } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,15 +43,27 @@ export default function Navbar() {
 
   return (
     <header className="cureo-header-wrapper">
-      {/* Main Navbar */}
-      <nav className={`cureo-navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-        <div className="header-content">
-          <Link to="/" className="brand-wrapper" style={{ textDecoration: 'none' }}>
-            <span className="brand-title-text" style={{ color: 'var(--primary)', transition: 'none' }}>Mystic Mithi</span>
-          </Link>
+      {/* Announcement Bar */}
+      <div className="mm-topbar">
+        <div className="mm-topbar-inner">
+          <div className="mm-topbar-marquee">
+            <div className="mm-topbar-track">
+              <span>Signed copies now available &mdash; order directly from the author</span>
+              <span aria-hidden="true">Signed copies now available &mdash; order directly from the author</span>
+            </div>
+          </div>
+          <div className="mm-topbar-social">
+            <a href="https://www.instagram.com/mystic_mithi25" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram size={12} /></a>
+            <a href="https://www.facebook.com/mysticmithi" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF size={11} /></a>
+            <a href="https://wa.me/917002974378" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><FaWhatsapp size={12} /></a>
+          </div>
+        </div>
+      </div>
 
-          {/* Desktop Nav Links */}
-          <ul className="nav-links desktop-nav">
+      {/* Main Navbar */}
+      <nav className={`cureo-navbar mm-navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
+        <div className="header-content mm-header">
+          <ul className="nav-links desktop-nav mm-nav-left">
             <li>
               <NavLink to="/" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")} end>
                 Home
@@ -62,7 +76,19 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink to="/about" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-                About Author
+                About
+              </NavLink>
+            </li>
+          </ul>
+
+          <Link to="/" className="mm-logo" aria-label="Mystic Mithi home">
+            <span className="mm-logo-script">Mystic Mithi</span>
+          </Link>
+
+          <ul className="nav-links desktop-nav mm-nav-right">
+            <li>
+              <NavLink to="/faq" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+                FAQ
               </NavLink>
             </li>
             <li>
@@ -70,14 +96,17 @@ export default function Navbar() {
                 Contact
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/books" className="nav-link mm-nav-cta">
+                Shop Books
+              </NavLink>
+            </li>
           </ul>
 
-          <div className="header-action desktop-action">
-            <Link to="/books" className="btn-inspiration-primary">
-              <FaBookOpen size={13} style={{ marginRight: '6px' }} />
-              <span>Explore Books</span>
-            </Link>
-          </div>
+          <button type="button" className="mm-cart-btn" onClick={openDrawer} aria-label={`Open cart, ${count} items`}>
+            <FiShoppingBag size={21} strokeWidth={1.8} />
+            {count > 0 && <span className="mm-cart-badge">{count}</span>}
+          </button>
 
           {/* Mobile Hamburger Toggle Button */}
           <button
@@ -104,7 +133,7 @@ export default function Navbar() {
       >
         <div className="drawer-header">
           <Link to="/" className="brand-wrapper" style={{ textDecoration: 'none' }} onClick={() => setMobileMenuOpen(false)}>
-            <span className="brand-title-text" style={{ fontSize: '1.25rem', color: 'var(--primary)', transition: 'none' }}>Mystic Mithi</span>
+            <span className="mm-logo-script mm-logo-drawer">Mystic Mithi</span>
           </Link>
 
           <button
@@ -135,7 +164,13 @@ export default function Navbar() {
               to="/about"
               className={({ isActive }) => (isActive ? "drawer-link active" : "drawer-link")}
             >
-              About Author
+              About
+            </NavLink>
+            <NavLink
+              to="/faq"
+              className={({ isActive }) => (isActive ? "drawer-link active" : "drawer-link")}
+            >
+              FAQ
             </NavLink>
             <NavLink
               to="/contact"
@@ -146,9 +181,14 @@ export default function Navbar() {
           </nav>
 
           <div className="drawer-action">
-            <Link to="/books" className="btn-inspiration-primary drawer-btn">
-              <span>Explore Books</span>
+            <Link to="/books" className="btn-insp-primary mm-drawer-cta">
+              Shop Books
             </Link>
+            <div className="mm-drawer-social">
+              <a href="https://www.instagram.com/mystic_mithi25" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram size={16} /></a>
+              <a href="https://www.facebook.com/mysticmithi" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF size={15} /></a>
+              <a href="https://wa.me/917002974378" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><FaWhatsapp size={16} /></a>
+            </div>
           </div>
         </div>
       </aside>

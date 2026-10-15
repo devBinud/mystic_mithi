@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { FaBookOpen, FaFeatherPointed, FaHeart, FaAward, FaArrowRight, FaInstagram, FaWhatsapp, FaFacebookF } from 'react-icons/fa6';
+import { FaBookOpen, FaFeatherPointed, FaHeart, FaArrowRight, FaInstagram, FaWhatsapp, FaFacebookF } from 'react-icons/fa6';
 import authorImg from '../assets/author.jpg';
-import book1Img from '../assets/book1.jpg';
-import book2Img from '../assets/book2.jpg';
-import book3Img from '../assets/book3.jpg';
+import { getBooks } from '../admin/adminStore';
+import BookCard from '../components/BookCard';
 
 export default function AboutPage() {
+  const books = getBooks();
   return (
     <div className="insp-page-wrapper" style={{ paddingTop: '2.5rem', paddingBottom: '6rem' }}>
       <div className="insp-container">
@@ -16,12 +16,12 @@ export default function AboutPage() {
             MEET MYSTIC MITHI.
           </h1>
           <p className="insp-section-subtitle" style={{ margin: '0 auto', maxWidth: '680px' }}>
-            Author, poet, and founder of Mithi-Inkling Ink — exploring love, solitude, emotional resilience, and the unspoken architecture of the human heart.
+            Poet writing as _Inkling Ink — exploring mystical love, life, the cosmos and the quiet depths of the human heart.
           </p>
         </div>
 
         {/* Bio Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 450px) 1fr', gap: '4.5rem', alignItems: 'center', marginBottom: '5.5rem' }}>
+        <div className="mm-about-grid">
           <div>
             <div
               style={{
@@ -42,7 +42,7 @@ export default function AboutPage() {
                 Mystic Mithi
               </span>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: '4px 0 1rem' }}>
-                Bestselling Author & Literary Creator
+                Poet &middot; writing as _Inkling Ink
               </p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                 <a
@@ -55,7 +55,7 @@ export default function AboutPage() {
                   <FaWhatsapp size={17} />
                 </a>
                 <a
-                  href="https://www.instagram.com/mystic_mithi"
+                  href="https://www.instagram.com/mystic_mithi25"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#E1306C' }}
@@ -83,15 +83,22 @@ export default function AboutPage() {
             </h2>
 
             <p style={{ fontSize: '1rem', lineHeight: '1.8', color: 'var(--text-body)', marginBottom: '1.25rem' }}>
-              Known affectionately by thousands of devoted readers across the country as <strong>Mystic Mithi</strong>, she is a contemporary literary voice whose work traverses the intimate spectrum between vulnerability and strength. Her writing marries raw emotional candor with lyrical elegance.
+              <strong>Mystic Mithi</strong>, who writes as <strong>_Inkling Ink</strong>, has always been fascinated with
+              words and the depth of life. She believes words can solve the puzzle of restless hearts and enlighten them
+              with a new light. Her inspiration is Jalāl ad-Dīn Muhammad Rūmī, whose grace and magic led her to write about
+              mystical love, life and inspiration.
             </p>
 
             <p style={{ fontSize: '1rem', lineHeight: '1.8', color: 'var(--text-body)', marginBottom: '1.25rem' }}>
-              Under her independent literary imprint <strong>Mithi-Inkling Ink</strong>, she has published acclaimed collections including <em>The Whispers of Ink</em>, <em>Echoes of the Mystic Mind</em>, and <em>Between the Silence</em>. Her poems and reflections regularly circulate across social platforms, resonating with anyone navigating love, heartbreak, grief, and spiritual quietude.
+              A deep thinker and keen observer, an empath, perpetually poetic and a worshipper of words, she reads Rumi,
+              John Keats, Pablo Neruda, Edgar Allan Poe, Franz Kafka and Rabindranath Tagore. She has published two poetry
+              collections: <em>When the Mystic Meets a Starfish</em> and <em>Caravan to the Cosmos</em>.
             </p>
 
             <p style={{ fontSize: '1rem', lineHeight: '1.8', color: 'var(--text-body)', marginBottom: '2rem' }}>
-              Whether penning contemplative verses late at night or engaging in heartfelt conversations with fellow readers, Mystic Mithi creates literature that serves as a sanctuary — reminding us that we are never truly alone in what we feel.
+              Beyond poetry, she loves exploring new places and cuisines, every genre of music, and the latest in
+              technology. She strongly trusts in goodness and humbleness &mdash; and wants only to share &ldquo;the
+              deepness&rdquo; with her readers.
             </p>
 
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
@@ -106,7 +113,7 @@ export default function AboutPage() {
         </div>
 
         {/* 3 Pillars / Highlights */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem', marginBottom: '5.5rem' }}>
+        <div className="mm-about-values">
           <div style={{ background: '#FFFFFF', padding: '2rem', borderRadius: '8px' }}>
             <FaFeatherPointed size={28} color="var(--primary)" style={{ marginBottom: '1rem' }} />
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--text-heading)', margin: '0 0 0.5rem 0' }}>
@@ -120,10 +127,10 @@ export default function AboutPage() {
           <div style={{ background: '#FFFFFF', padding: '2rem', borderRadius: '8px' }}>
             <FaBookOpen size={28} color="var(--primary)" style={{ marginBottom: '1rem' }} />
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--text-heading)', margin: '0 0 0.5rem 0' }}>
-              Independent Publishing
+              Published Poet
             </h3>
             <p style={{ fontSize: '0.9rem', lineHeight: '1.65', color: 'var(--text-body)', margin: 0 }}>
-              Through Mithi-Inkling Ink, creating thoughtfully designed, keepsake editions printed on luxury cream paper.
+              Two published poetry collections: When the Mystic Meets a Starfish and Caravan to the Cosmos.
             </p>
           </div>
 
@@ -133,7 +140,7 @@ export default function AboutPage() {
               Reader Community
             </h3>
             <p style={{ fontSize: '0.9rem', lineHeight: '1.65', color: 'var(--text-body)', margin: 0 }}>
-              Over 50,000 readers who find companionship, healing, and courage in her weekly verses and published works.
+              Readers who find companionship, healing and courage in her verses &mdash; follow along on Instagram @mystic_mithi25.
             </p>
           </div>
         </div>
@@ -143,46 +150,23 @@ export default function AboutPage() {
           <span className="insp-eyebrow">CURATED WORKS</span>
           <h2 className="insp-section-title">BOOKS BY MYSTIC MITHI.</h2>
           <p className="insp-section-subtitle" style={{ margin: '0 auto' }}>
-            Discover her celebrated collection of poetry, fiction, and reflective journals.
+            Two collections of mystical, cosmic and soulful poetry.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
-          <div style={{ background: 'var(--bg-secondary)', padding: '2rem 1.5rem', borderRadius: '10px', textAlign: 'center' }}>
-            <img src={book1Img} alt="The Whispers of Ink" style={{ maxHeight: '280px', borderRadius: '6px', marginBottom: '1.25rem', boxShadow: '0 12px 30px rgba(0,0,0,0.2)' }} />
-            <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: 'var(--text-heading)', margin: '0 0 0.35rem 0' }}>The Whispers of Ink</h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Poetry & Musings • ₹399</p>
-            <Link to="/books/book-1" className="btn-insp-primary" style={{ fontSize: '0.75rem', padding: '0.45rem 1rem' }}>
-              View Book
-            </Link>
-          </div>
-
-          <div style={{ background: 'var(--bg-secondary)', padding: '2rem 1.5rem', borderRadius: '10px', textAlign: 'center' }}>
-            <img src={book2Img} alt="Echoes of the Mystic Mind" style={{ maxHeight: '280px', borderRadius: '6px', marginBottom: '1.25rem', boxShadow: '0 12px 30px rgba(0,0,0,0.2)' }} />
-            <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: 'var(--text-heading)', margin: '0 0 0.35rem 0' }}>Echoes of the Mystic Mind</h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Philosophical Prose • ₹449</p>
-            <Link to="/books/book-2" className="btn-insp-primary" style={{ fontSize: '0.75rem', padding: '0.45rem 1rem' }}>
-              View Book
-            </Link>
-          </div>
-
-          <div style={{ background: 'var(--bg-secondary)', padding: '2rem 1.5rem', borderRadius: '10px', textAlign: 'center' }}>
-            <img src={book3Img} alt="Between the Silence" style={{ maxHeight: '280px', borderRadius: '6px', marginBottom: '1.25rem', boxShadow: '0 12px 30px rgba(0,0,0,0.2)' }} />
-            <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: 'var(--text-heading)', margin: '0 0 0.35rem 0' }}>Between the Silence</h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Literary Fiction • ₹349</p>
-            <Link to="/books/book-3" className="btn-insp-primary" style={{ fontSize: '0.75rem', padding: '0.45rem 1rem' }}>
-              View Book
-            </Link>
-          </div>
+        <div className="insp-product-grid" style={{ marginBottom: '4rem' }}>
+          {books.map((book) => (
+            <BookCard key={book.id} book={book} />
+          ))}
         </div>
 
         {/* Pull Quote */}
         <section className="insp-quote-section" style={{ border: 'none', background: 'transparent', padding: '2rem 0' }}>
           <blockquote className="insp-quote-text" style={{ fontSize: 'clamp(1.6rem, 2.8vw, 2.2rem)' }}>
-            “We write not to escape life, but to touch the parts of our soul that silence could never reach.”
+            “For getting a pearl, you have to dive into the deep ocean.”
           </blockquote>
           <div className="insp-quote-attribution">
-            — MYSTIC MITHI, MITHI-INKLING INK
+            — _INKLING INK, WHEN THE MYSTIC MEETS A STARFISH
           </div>
         </section>
       </div>

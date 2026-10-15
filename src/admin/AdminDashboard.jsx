@@ -42,7 +42,7 @@ export default function AdminDashboard() {
     image: '',
     description: '',
     pages: 200,
-    publisher: 'Mithi-Inkling Ink Publishing',
+    publisher: '',
     isbn: '',
     format: 'Paperback',
     inStock: true,
@@ -53,12 +53,12 @@ export default function AdminDashboard() {
   const [settingsSaved, setSettingsSaved] = useState(false);
   const [authorSettings, setAuthorSettings] = useState({
     authorName: 'Mystic Mithi',
-    imprintName: 'Mithi-Inkling Ink Publishing',
+    imprintName: '',
     phone: '+91 70029 74378',
     whatsapp: '+91 70029 74378',
-    email: 'contact@mysticmithi.com',
+    email: 'mystic.mithi25@gmail.com',
     dispatchCity: 'Dibrugarh, Assam, India — 786001',
-    instagramUrl: 'https://www.instagram.com/mystic_mithi',
+    instagramUrl: 'https://www.instagram.com/mystic_mithi25',
     facebookUrl: 'https://www.facebook.com/mysticmithi'
   });
 
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
       image: '',
       description: '',
       pages: 200,
-      publisher: 'Mithi-Inkling Ink Publishing',
+      publisher: '',
       isbn: '978-93-5421-' + Math.floor(100 + Math.random() * 900),
       format: 'Paperback',
       inStock: true,
@@ -109,7 +109,7 @@ export default function AdminDashboard() {
       image: book.image || '',
       description: book.description || '',
       pages: book.pages || 200,
-      publisher: book.publisher || 'Mithi-Inkling Ink Publishing',
+      publisher: book.publisher || '',
       isbn: book.isbn || '',
       format: book.format || 'Paperback',
       inStock: book.inStock !== false,
@@ -443,7 +443,7 @@ export default function AdminDashboard() {
               />
 
               <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto' }}>
-                {['All', 'Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'].map((st) => (
+                {['All', 'Awaiting Payment', 'Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'].map((st) => (
                   <button
                     key={st}
                     type="button"
@@ -537,6 +537,7 @@ export default function AdminDashboard() {
                                 cursor: 'pointer'
                               }}
                             >
+                              <option value="Awaiting Payment">Awaiting Payment</option>
                               <option value="Pending">Pending</option>
                               <option value="Processing">Processing</option>
                               <option value="Shipped">Shipped</option>
@@ -742,7 +743,7 @@ export default function AdminDashboard() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. The Whispers of Ink"
+                  placeholder="e.g. When the Mystic Meets a Starfish"
                   value={bookForm.title}
                   onChange={(e) => setBookForm({ ...bookForm, title: e.target.value })}
                   className="insp-input"

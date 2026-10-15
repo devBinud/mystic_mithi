@@ -9,6 +9,10 @@ import BooksPage from './pages/BooksPage'
 import BookDetailPage from './pages/BookDetailPage'
 import CheckoutPage from './pages/CheckoutPage'
 import ContactPage from './pages/ContactPage'
+import FaqPage from './pages/FaqPage'
+import BuyNowRedirect from './pages/BuyNowRedirect'
+import CartDrawer from './components/CartDrawer'
+import ScrollReveal from './components/ScrollReveal'
 import AdminDashboard from './admin/AdminDashboard'
 import AdminLogin from './admin/AdminLogin'
 import './App.css'
@@ -48,8 +52,10 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BooksPage />} />
           <Route path="/books/:id" element={<BookDetailPage />} />
-          <Route path="/checkout/:id" element={<CheckoutPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/checkout/:id" element={<BuyNowRedirect />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/faq" element={<FaqPage />} />
           <Route path="/contact" element={<ContactPage />} />
           {/* Legacy route fallback */}
           <Route path="/appointment" element={<BooksPage />} />
@@ -58,6 +64,8 @@ function App() {
 
       <Footer />
       <FloatingWidgets />
+      <CartDrawer />
+      <ScrollReveal />
     </div>
   )
 }

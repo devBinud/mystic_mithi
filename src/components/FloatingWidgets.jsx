@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { FaWhatsapp, FaPhone, FaArrowUp } from 'react-icons/fa6'
+import { FaArrowUp } from 'react-icons/fa6'
 
 export default function FloatingWidgets() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -24,10 +24,6 @@ export default function FloatingWidgets() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  const whatsappNumber = "917002974378";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello Mystic Mithi, I am interested in purchasing your books / literary inquiries.")}`;
-  const phoneUrl = "tel:+917002974378";
 
   // SVG progress circle calculations
   const radius = 20;
@@ -73,31 +69,6 @@ export default function FloatingWidgets() {
         </button>
       )}
 
-      {/* Floating Call Button */}
-      <a 
-        href={phoneUrl} 
-        className="floating-btn call-btn" 
-        title="Call Us (+91 70029 74378)"
-        aria-label="Call Us"
-      >
-        <FaPhone size={18} />
-        <span className="btn-mobile-label">Call Us</span>
-        <span className="tooltip-text">Call Us</span>
-      </a>
-
-      {/* Floating WhatsApp Button */}
-      <a 
-        href={whatsappUrl} 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="floating-btn whatsapp-btn" 
-        title="WhatsApp Booking"
-        aria-label="WhatsApp Booking"
-      >
-        <FaWhatsapp size={22} />
-        <span className="btn-mobile-label">WhatsApp</span>
-        <span className="tooltip-text">Chat on WhatsApp</span>
-      </a>
     </div>
   )
 }

@@ -1,59 +1,55 @@
 :root {
   /* ==========================================
-     MYSTIC MITHI - EDITORIAL LITERARY / WELLNESS PALETTE
-     (Inspired directly by inspiration.webp)
+     MYSTIC MITHI - PLUM, PINK & ROSE-GOLD PALETTE
      ========================================== */
 
-  /* 🟠 Primary & Terracotta Accents */
-  --primary: #E06236;
-  /* Warm terracotta / burnt orange */
-  --primary-dark: #C95026;
-  /* Darker terracotta on hover */
-  --navy-blue: #181818;
-  /* Deep inky charcoal */
-  --navy-dark: #121212;
-  /* Pure deep dark charcoal */
+  /* Primary accent: hot pink */
+  --primary: #D81B78;
+  --primary-dark: #B3125F;
+  --primary-rgb: 216, 27, 120;
 
-  /* 🌿 Neutral Accents */
-  --secondary: #262626;
-  --accent: #E06236;
-  --accent-light: #FAF1EB;
-  /* Warm terracotta soft tint */
-  --accent-gold: #C49A45;
-  --accent-beige: #EBE4DA;
-  /* Warm neutral block */
+  /* Signature plum */
+  --plum: #4E3B57;
+  --plum-dark: #3A2B42;
+  --navy-blue: #4E3B57;
+  --navy-dark: #3A2B42;
 
-  /* ⚪ Background Colors */
-  --bg-main: #FAF7F2;
-  /* Warm paper / cream background */
+  /* Neutral accents */
+  --secondary: #3A2B42;
+  --accent: #D81B78;
+  --accent-light: #FCE9F2;
+  --accent-gold: #C9A27E;
+  --accent-beige: #F3E9EE;
+  --rose-gold: #C9A27E;
+
+  /* Backgrounds */
+  --bg-main: #FBF7F9;
   --bg-card: #FFFFFF;
-  /* Pure white cards */
-  --bg-secondary: #F1ECE3;
-  /* Secondary warm block */
-  --bg-glass: rgba(250, 247, 242, 0.9);
+  --bg-secondary: #F4EBF0;
+  --bg-blush: #EEDCE6;
+  --bg-glass: rgba(251, 247, 249, 0.92);
 
-  /* ⚫ Text Colors */
-  --text-heading: #121212;
-  /* Deep black charcoal */
-  --text-body: #4A4A4A;
-  /* High-legibility neutral */
-  --text-secondary: #6B6661;
-  --text-muted: #8C8680;
-  --text-brand: #E06236;
+  /* Text */
+  --text-heading: #2E2235;
+  --text-body: #4B4252;
+  --text-secondary: #6A6070;
+  --text-muted: #8C8292;
+  --text-brand: #D81B78;
 
-  /* 🟤 Borders */
-  --border-gold: #D8CEBE;
-  --border-ui: #E5DFD6;
-  /* Subtle warm border */
+  /* Borders */
+  --border-gold: #DCC3A8;
+  --border-ui: #EADFE5;
 
   /* ==========================================
      TYPOGRAPHY & UTILITIES
      ========================================== */
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-cinzel: 'Cinzel', 'Playfair Display', Georgia, serif;
-  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Playfair Display', Georgia, serif;
-  --font-numbers: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Lora', Georgia, serif;
+  --font-cinzel: 'Cinzel', 'Lora', Georgia, serif;
+  --font-sans: 'Lato', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Josefin Sans', 'Lato', system-ui, sans-serif;
+  --font-display: 'Josefin Sans', 'Lato', system-ui, sans-serif;
+  --font-script: 'Great Vibes', 'Brush Script MT', cursive;
+  --font-numbers: 'Josefin Sans', 'Lato', system-ui, sans-serif;
 
   --shadow-sm: 0 2px 6px rgba(9, 56, 25, 0.04);
   --shadow-md: 0 8px 24px -4px rgba(9, 56, 25, 0.08);
@@ -109,7 +105,7 @@ h6 {
   color: var(--text-heading);
   line-height: 1.25;
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: 0.01em;
 }
 
 a {

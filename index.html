@@ -11,16 +11,16 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mystic Mithi — Author, Poet & Official Book Store</title>
+  <title>Mystic Mithi - Author, Poet & Official Book Store</title>
   <meta name="description"
-    content="Official website and online bookstore of author Mystic Mithi (Mithi-Inkling Ink). Discover heartfelt poetry, philosophical prose, literary fiction, and order signed copies directly." />
+    content="Official website and online bookstore of author Mystic Mithi (_Inkling Ink). Discover her poetry collections and order copies directly." />
 
   <!-- Open Graph / WhatsApp / Social Preview -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Mystic Mithi — Author & Online Book Store" />
   <meta property="og:title" content="Mystic Mithi — Author, Poet & Official Book Store" />
   <meta property="og:description"
-    content="Explore books by Mystic Mithi: The Whispers of Ink, Echoes of the Mystic Mind, and Between the Silence. Order online with doorstep delivery." />
+    content="Poetry by Mystic Mithi (_Inkling Ink): When the Mystic Meets a Starfish and Caravan to the Cosmos. Order online with doorstep delivery." />
 
   <!-- Twitter Card Preview -->
   <meta name="twitter:card" content="summary" />
@@ -32,11 +32,103 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Great+Vibes&family=Josefin+Sans:wght@400;600;700&family=Lato:wght@400;700&family=Lora:ital,wght@0,400..700;1,400..700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap"
     rel="stylesheet">
+  <!-- Preloader (shown instantly, removed by src/main.jsx once the app is ready) -->
+  <style>
+    #mm-preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 50% 40%, #5E4868 0%, #4E3B57 45%, #3A2B42 100%);
+      transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1), visibility 0s linear 0.8s;
+    }
+    #mm-preloader.mm-preloader-done {
+      transform: translateY(-100%);
+      visibility: hidden;
+    }
+    .mm-pl-sign {
+      position: relative;
+      display: inline-block;
+      padding: 0 0.15em;
+    }
+    /* Signature reveals left to right, as if being written */
+    .mm-pl-logo {
+      display: block;
+      font-family: 'Great Vibes', 'Brush Script MT', cursive;
+      font-size: clamp(3.2rem, 9vw, 5rem);
+      line-height: 1.25;
+      color: #FFFFFF;
+      white-space: nowrap;
+      clip-path: inset(-20% 100% -20% 0);
+      animation: mm-pl-write 1s cubic-bezier(0.55, 0.1, 0.35, 1) 0.15s forwards;
+    }
+    /* Glowing pen tip that travels with the writing */
+    .mm-pl-nib {
+      position: absolute;
+      top: 58%;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      margin: -4px 0 0 -4px;
+      border-radius: 50%;
+      background: #FF5FA8;
+      box-shadow: 0 0 12px 4px rgba(216, 27, 120, 0.7);
+      opacity: 0;
+      animation: mm-pl-nib 1s cubic-bezier(0.55, 0.1, 0.35, 1) 0.15s forwards;
+    }
+    .mm-pl-rule {
+      width: 0;
+      height: 1px;
+      margin: 0.6rem auto 0.9rem;
+      background: linear-gradient(90deg, transparent, #E7C9A9, transparent);
+      animation: mm-pl-rule 0.7s ease 0.95s forwards;
+    }
+    .mm-pl-tag {
+      font-family: 'Josefin Sans', 'Lato', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      opacity: 0;
+      transform: translateY(6px);
+      animation: mm-pl-tag 0.6s ease 1.05s forwards;
+    }
+    @keyframes mm-pl-write {
+      to { clip-path: inset(-20% 0 -20% 0); }
+    }
+    @keyframes mm-pl-nib {
+      0% { left: 0; opacity: 1; }
+      92% { opacity: 1; }
+      100% { left: 100%; opacity: 0; }
+    }
+    @keyframes mm-pl-rule {
+      to { width: 180px; }
+    }
+    @keyframes mm-pl-tag {
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #mm-preloader { transition: opacity 0.4s ease, visibility 0s linear 0.4s; }
+      #mm-preloader.mm-preloader-done { transform: none; opacity: 0; }
+      .mm-pl-logo, .mm-pl-rule, .mm-pl-tag { animation: none; clip-path: none; opacity: 1; transform: none; width: auto; }
+      .mm-pl-rule { width: 180px; }
+      .mm-pl-nib { display: none; }
+    }
+  </style>
 </head>
 
 <body>
+  <div id="mm-preloader" aria-hidden="true">
+    <div class="mm-pl-sign">
+      <span class="mm-pl-logo">Mystic Mithi</span>
+      <span class="mm-pl-nib"></span>
+    </div>
+  </div>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

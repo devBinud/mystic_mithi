@@ -1,14 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FaStar, FaCartShopping } from 'react-icons/fa6';
+import { useState } from 'react';
 import { getBooks } from '../admin/adminStore';
+import BookCard from '../components/BookCard';
 
 export default function BooksPage() {
-  const [books, setBooks] = useState([]);
+  const [books] = useState(getBooks);
   const [selectedGenre, setSelectedGenre] = useState('All');
-  useEffect(() => {
-    setBooks(getBooks());
-  }, []);
 
   const genres = ['All', ...new Set(books.map((b) => b.genre))];
 
@@ -58,117 +54,9 @@ export default function BooksPage() {
         </div>
 
         {/* Books Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2.5rem' }}>
+        <div className="insp-product-grid">
           {filteredBooks.map((book) => (
-            <div
-              key={book.id}
-              style={{
-                background: '#FFFFFF',
-                borderRadius: '10px',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.04)'
-              }}
-              className="book-catalog-card"
-            >
-              {/* Book Cover Image */}
-              <div style={{ background: 'var(--bg-secondary)', padding: '2rem 1.5rem', textAlign: 'center', position: 'relative' }}>
-                <Link to={`/books/${book.id}`}>
-                  <img
-                    src={book.image}
-                    alt={book.title}
-                    style={{
-                      maxHeight: '340px',
-                      maxWidth: '85%',
-                      width: 'auto',
-                      borderRadius: '6px',
-                      boxShadow: '0 15px 35px -5px rgba(0,0,0,0.25)',
-                      transition: 'transform 0.3s ease'
-                    }}
-                  />
-                </Link>
-                {book.featured && (
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '1rem',
-                      left: '1rem',
-                      background: 'var(--primary)',
-                      color: '#FFFFFF',
-                      fontSize: '0.7rem',
-                      fontWeight: 800,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      padding: '0.25rem 0.65rem',
-                      borderRadius: '4px'
-                    }}
-                  >
-                    Bestseller
-                  </span>
-                )}
-              </div>
-
-              {/* Book Info */}
-              <div style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <span style={{ fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)' }}>
-                    {book.genre}
-                  </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#E06236', fontSize: '0.85rem' }}>
-                    <FaStar size={12} />
-                    <strong style={{ color: 'var(--text-heading)', fontFamily: 'var(--font-numbers)' }}>{book.rating}</strong>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontFamily: 'var(--font-numbers)' }}>({book.reviewsCount})</span>
-                  </div>
-                </div>
-
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-heading)', margin: '0 0 0.35rem 0', textTransform: 'uppercase' }}>
-                  <Link to={`/books/${book.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                    {book.title}
-                  </Link>
-                </h3>
-
-                <p style={{ fontSize: '0.825rem', color: 'var(--text-muted)', fontStyle: 'italic', margin: '0 0 0.75rem 0' }}>
-                  {book.subtitle}
-                </p>
-
-                <p style={{ fontSize: '0.88rem', lineHeight: '1.6', color: 'var(--text-body)', margin: '0 0 1.5rem 0', flex: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  {book.description}
-                </p>
-
-                {/* Price and Action */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '1.25rem', borderTop: '1px solid var(--border-ui)' }}>
-                  <div>
-                    <span style={{ fontFamily: 'var(--font-numbers)', fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-heading)', letterSpacing: '-0.02em' }}>
-                      ₹{book.price}
-                    </span>
-                    {book.originalPrice && book.originalPrice > book.price && (
-                      <span style={{ fontFamily: 'var(--font-numbers)', textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.9rem', marginLeft: '0.5rem' }}>
-                        ₹{book.originalPrice}
-                      </span>
-                    )}
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <Link
-                      to={`/books/${book.id}`}
-                      className="btn-insp-secondary"
-                      style={{ fontSize: '0.78rem', padding: '0.45rem 0.65rem' }}
-                    >
-                      Details
-                    </Link>
-                    <Link
-                      to={`/checkout/${book.id}`}
-                      className="btn-insp-primary"
-                      style={{ fontSize: '0.78rem', padding: '0.55rem 1rem' }}
-                    >
-                      <FaCartShopping size={12} /> Buy Now
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <BookCard key={book.id} book={book} />
           ))}
         </div>
       </div>

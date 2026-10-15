@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { FaStar, FaCartShopping, FaArrowLeft, FaTruck, FaShieldHalved } from 'react-icons/fa6';
+import { useState, useMemo } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { FaStar, FaArrowLeft, FaTruck, FaShieldHalved } from 'react-icons/fa6';
 import { getBookById } from '../admin/adminStore';
+import { useCart } from '../cart/useCart';
+import { BOOK_FORMATS } from '../cart/cartContext';
 
 export default function BookDetailPage() {
   const { id } = useParams();
-  const [book, setBook] = useState(null);
+  const book = useMemo(() => getBookById(id), [id]);
   const [selectedFormat, setSelectedFormat] = useState('Paperback');
-  useEffect(() => {
-    const found = getBookById(id);
-    if (found) {
-      setBook(found);
-    }
-  }, [id]);
+  const { addItem } = useCart();
+  const navigate = useNavigate();
 
   if (!book) {
     return (
@@ -39,7 +37,7 @@ export default function BookDetailPage() {
         </div>
 
         {/* 2-Column Book Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 420px) 1fr', gap: '4.5rem', alignItems: 'start' }}>
+        <div className="mm-book-detail-grid">
           {/* Left Column: Cover & Quick Buy */}
           <div>
             <div
@@ -67,7 +65,7 @@ export default function BookDetailPage() {
             </div>
 
             {/* Guarantees Box */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1.5rem' }}>
+            <div className="mm-book-guarantees">
               <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                 <FaTruck size={18} color="var(--primary)" />
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-body)', fontWeight: 600 }}>Fast Doorstep Delivery</span>
@@ -90,13 +88,15 @@ export default function BookDetailPage() {
             </p>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1.75rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border-ui)', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#E06236', fontSize: '0.95rem' }}>
-                {[...Array(5)].map((_, i) => (
-                  <FaStar key={i} size={14} />
-                ))}
-                <strong style={{ color: 'var(--text-heading)', marginLeft: '4px' }}>{book.rating}</strong>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>({book.reviewsCount} reader reviews)</span>
-              </div>
+              {book.rating ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontSize: '0.95rem' }}>
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar key={i} size={14} />
+                  ))}
+                  <strong style={{ color: 'var(--text-heading)', marginLeft: '4px' }}>{book.rating}</strong>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>({book.reviewsCount} reader reviews)</span>
+                </div>
+              ) : null}
               <div style={{ fontSize: '0.85rem', color: 'var(--text-body)' }}>
                 By <strong style={{ color: 'var(--text-heading)' }}>{book.author}</strong>
               </div>
@@ -128,7 +128,7 @@ export default function BookDetailPage() {
                 Select Format:
               </label>
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                {['Paperback', 'Hardcover Edition'].map((fmt) => (
+                {(book.formats?.length ? book.formats : BOOK_FORMATS).map((fmt) => (
                   <button
                     key={fmt}
                     type="button"
@@ -154,22 +154,24 @@ export default function BookDetailPage() {
 
             {/* CTA Buttons */}
             <div style={{ display: 'flex', gap: '1rem', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
-              <Link
-                to={`/checkout/${book.id}?format=${encodeURIComponent(selectedFormat)}`}
+              <button
+                type="button"
                 className="btn-insp-primary"
                 style={{ padding: '0.85rem 2.25rem', fontSize: '0.925rem' }}
+                onClick={() => addItem(book, selectedFormat)}
               >
-                <FaCartShopping size={14} /> Buy This Book Now
-              </Link>
-              <a
-                href={`https://wa.me/917002974378?text=${encodeURIComponent(`Hello Mystic Mithi, I would like to order a copy of "${book.title}" (${selectedFormat}).`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-insp-secondary"
-                style={{ padding: '0.85rem 1.5rem', fontSize: '0.85rem' }}
+                Add to Cart
+              </button>
+              <button
+                type="button"
+                className="mm-btn-outline"
+                onClick={() => {
+                  addItem(book, selectedFormat, 1, { openDrawer: false });
+                  navigate('/checkout');
+                }}
               >
-                Inquire on WhatsApp
-              </a>
+                Buy Now
+              </button>
             </div>
 
             {/* Synopsis */}
@@ -188,22 +190,22 @@ export default function BookDetailPage() {
                 Publication Details
               </h4>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', fontSize: '0.88rem' }}>
-                <div>
-                  <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Publisher</span>
-                  <strong style={{ color: 'var(--text-heading)' }}>{book.publisher}</strong>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Pages</span>
-                  <strong style={{ color: 'var(--text-heading)' }}>{book.pages} Pages</strong>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Language</span>
-                  <strong style={{ color: 'var(--text-heading)' }}>{book.language}</strong>
-                </div>
-                <div>
-                  <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>ISBN</span>
-                  <strong style={{ color: 'var(--text-heading)' }}>{book.isbn}</strong>
-                </div>
+                {[
+                  ['Author', book.author],
+                  ['Publisher', book.publisher],
+                  ['Pages', book.pages ? `${book.pages} Pages` : ''],
+                  ['Language', book.language],
+                  ['Format', (book.formats?.length ? book.formats : [book.format]).filter(Boolean).join(', ')],
+                  ['Published', book.publishedYear],
+                  ['ISBN', book.isbn && book.isbn !== 'N/A' ? book.isbn : '']
+                ]
+                  .filter(([, value]) => value)
+                  .map(([label, value]) => (
+                    <div key={label}>
+                      <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>{label}</span>
+                      <strong style={{ color: 'var(--text-heading)' }}>{value}</strong>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>

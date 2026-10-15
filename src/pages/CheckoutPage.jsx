@@ -1,113 +1,106 @@
-import { useState, useMemo } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
-import { FaArrowLeft, FaCheck, FaTruck, FaShieldHalved } from 'react-icons/fa6';
-import { getBookById, createOrder } from '../admin/adminStore';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FaArrowLeft, FaCheck, FaMinus, FaPlus, FaTrashCan, FaLock } from 'react-icons/fa6';
+import { createOrder } from '../admin/adminStore';
+import { useCart } from '../cart/useCart';
+import { SHIPPING_FEE } from '../cart/cartContext';
+import { startOnlinePayment, ONLINE_PAYMENTS_ENABLED } from '../cart/payment';
 
-const FORMATS = ['Paperback', 'Hardcover Edition'];
+const PAYMENT_OPTIONS = [
+  {
+    value: 'Online Payment',
+    label: 'Pay Online',
+    hint: ONLINE_PAYMENTS_ENABLED ? 'UPI, cards & netbanking' : 'UPI, cards & netbanking — coming soon',
+    disabled: !ONLINE_PAYMENTS_ENABLED
+  },
+  { value: 'Cash on Delivery (COD)', label: 'Cash on Delivery', hint: 'Pay when your books arrive' }
+];
 
-const labelStyle = { display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px', color: 'var(--text-heading)' };
+const EMPTY_FORM = {
+  customerName: '',
+  phone: '',
+  email: '',
+  address: '',
+  city: '',
+  state: '',
+  pincode: '',
+  paymentMethod: ONLINE_PAYMENTS_ENABLED ? 'Online Payment' : 'Cash on Delivery (COD)'
+};
 
 export default function CheckoutPage() {
-  const { id } = useParams();
-  const [searchParams] = useSearchParams();
-  const initialFormat = FORMATS.includes(searchParams.get('format')) ? searchParams.get('format') : 'Paperback';
+  const { items, subtotal, setQty, removeItem, clearCart } = useCart();
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [placing, setPlacing] = useState(false);
+  const [error, setError] = useState('');
+  const [placedOrder, setPlacedOrder] = useState(null);
 
-  const book = useMemo(() => getBookById(id), [id]);
-  const [selectedFormat, setSelectedFormat] = useState(initialFormat);
-  const [orderSuccess, setOrderSuccess] = useState(null);
-  const [orderForm, setOrderForm] = useState({
-    customerName: '',
-    phone: '',
-    email: '',
-    address: '',
-    city: '',
-    state: 'Assam',
-    pincode: '',
-    quantity: 1,
-    paymentMethod: 'Cash on Delivery (COD)'
-  });
+  const shipping = items.length ? SHIPPING_FEE : 0;
+  const total = subtotal + shipping;
+  const update = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
-  if (!book) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!items.length || placing) return;
+    setPlacing(true);
+    setError('');
+
+    const order = createOrder({
+      ...form,
+      items: items.map(({ id, title, format, price, qty }) => ({ id, title, format, price, qty })),
+      bookId: items.map((i) => i.id).join(','),
+      bookTitle: items.map((i) => `${i.title} (${i.format}) ×${i.qty}`).join(', '),
+      bookPrice: subtotal,
+      quantity: items.reduce((n, i) => n + i.qty, 0),
+      shipping,
+      totalAmount: total
+    });
+
+    try {
+      if (form.paymentMethod === 'Online Payment') {
+        await startOnlinePayment(order);
+      }
+      clearCart();
+      setPlacedOrder(order);
+      window.scrollTo(0, 0);
+    } catch {
+      setError('Payment could not be completed. Please try again.');
+    } finally {
+      setPlacing(false);
+    }
+  };
+
+  if (placedOrder) {
     return (
-      <div className="insp-page-wrapper" style={{ padding: '6rem 0', textAlign: 'center' }}>
-        <div className="insp-container">
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem' }}>Book Not Found</h2>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>The book you are trying to order does not exist or has been removed.</p>
-          <Link to="/books" className="btn-insp-primary">
-            <FaArrowLeft size={12} /> Return to Books
-          </Link>
+      <div className="insp-page-wrapper mm-checkout">
+        <div className="insp-container" style={{ maxWidth: '620px' }}>
+          <div className="mm-checkout-card mm-checkout-done">
+            <span className="mm-checkout-done-icon"><FaCheck size={22} /></span>
+            <h1 className="mm-script">Thank you!</h1>
+            <p>
+              Your order <strong>{placedOrder.id}</strong> has been placed, {placedOrder.customerName}.
+              {placedOrder.email && <> A confirmation will be sent to <strong>{placedOrder.email}</strong>.</>}
+            </p>
+            <dl className="mm-checkout-done-meta">
+              <div><dt>Items</dt><dd>{placedOrder.bookTitle}</dd></div>
+              <div><dt>Total</dt><dd>₹{placedOrder.totalAmount}</dd></div>
+              <div><dt>Payment</dt><dd>{placedOrder.paymentMethod}</dd></div>
+              <div><dt>Shipping to</dt><dd>{placedOrder.city}, {placedOrder.pincode}</dd></div>
+            </dl>
+            <Link to="/books" className="btn-insp-primary">Continue Browsing</Link>
+          </div>
         </div>
       </div>
     );
   }
 
-  const quantity = Number(orderForm.quantity) || 1;
-  const total = Number(book.price) * quantity;
-
-  const handleOrderSubmit = (e) => {
-    e.preventDefault();
-    if (!orderForm.customerName || !orderForm.phone || !orderForm.address) return;
-
-    const newOrder = createOrder({
-      ...orderForm,
-      bookId: book.id,
-      bookTitle: `${book.title} (${selectedFormat})`,
-      bookPrice: book.price,
-      totalAmount: total
-    });
-
-    setOrderSuccess(newOrder);
-    window.scrollTo(0, 0);
-  };
-
-  if (orderSuccess) {
+  if (!items.length) {
     return (
-      <div className="insp-page-wrapper" style={{ paddingTop: '3.5rem', paddingBottom: '6rem' }}>
+      <div className="insp-page-wrapper mm-checkout">
         <div className="insp-container" style={{ maxWidth: '620px' }}>
-          <div style={{ background: '#FFFFFF', borderRadius: '12px', padding: '2.5rem', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.04)' }}>
-            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#e6f7ec', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem' }}>
-              <FaCheck size={24} />
-            </div>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.9rem', marginBottom: '0.5rem', color: 'var(--text-heading)' }}>
-              Order Confirmed!
-            </h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.75rem' }}>
-              Thank you, <strong>{orderSuccess.customerName}</strong>! Your order for <strong>{orderSuccess.bookTitle}</strong> has been received by Mystic Mithi’s desk.
-            </p>
-
-            <div style={{ background: 'var(--bg-main)', padding: '1.25rem', borderRadius: '8px', textAlign: 'left', marginBottom: '1.75rem', fontSize: '0.9rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Order ID:</span>
-                <strong>{orderSuccess.id}</strong>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Total Amount:</span>
-                <strong style={{ color: 'var(--primary)' }}>₹{orderSuccess.totalAmount}</strong>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Payment Mode:</span>
-                <span>{orderSuccess.paymentMethod}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Shipping To:</span>
-                <span>{orderSuccess.city}, {orderSuccess.pincode}</span>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <a
-                href={`https://wa.me/917002974378?text=${encodeURIComponent(`Hello Mystic Mithi, I placed Order #${orderSuccess.id} for "${orderSuccess.bookTitle}" (Total: ₹${orderSuccess.totalAmount}). Please confirm shipment!`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-insp-primary"
-                style={{ justifyContent: 'center', background: '#25D366' }}
-              >
-                Confirm via WhatsApp
-              </a>
-              <Link to="/books" className="btn-insp-secondary" style={{ justifyContent: 'center' }}>
-                Continue Browsing Books
-              </Link>
-            </div>
+          <div className="mm-checkout-card mm-checkout-done">
+            <h1 className="mm-script">Your cart is empty</h1>
+            <p>Add a book to your cart to check out.</p>
+            <Link to="/books" className="btn-insp-primary">Browse Books</Link>
           </div>
         </div>
       </div>
@@ -115,200 +108,117 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="insp-page-wrapper" style={{ paddingTop: '2.5rem', paddingBottom: '6rem' }}>
+    <div className="insp-page-wrapper mm-checkout">
       <div className="insp-container">
-        {/* Breadcrumb */}
-        <div style={{ marginBottom: '2rem' }}>
-          <Link to={`/books/${book.id}`} className="insp-text-link" style={{ fontSize: '0.82rem', gap: '6px' }}>
-            <FaArrowLeft size={11} /> Back to Book Details
-          </Link>
-        </div>
-
-        {/* Header */}
-        <div style={{ marginBottom: '2.5rem' }}>
-          <span className="insp-eyebrow">DIRECT AUTHOR PURCHASE</span>
-          <h1 className="insp-section-title" style={{ fontSize: 'clamp(2rem, 3.6vw, 2.8rem)', margin: '0 0 0.5rem 0' }}>
-            CHECKOUT.
-          </h1>
-          <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', margin: 0 }}>
-            Author signed copy delivered directly to your doorstep across India.
-          </p>
-        </div>
+        <Link to="/books" className="mm-checkout-back">
+          <FaArrowLeft size={11} /> Continue shopping
+        </Link>
+        <h1 className="insp-section-title mm-checkout-title">Checkout</h1>
 
         <div className="checkout-grid">
-          {/* Left: Delivery Form */}
-          <form
-            onSubmit={handleOrderSubmit}
-            style={{ background: '#FFFFFF', borderRadius: '12px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', boxShadow: '0 4px 15px rgba(0,0,0,0.04)' }}
-          >
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--text-heading)', margin: '0 0 0.25rem 0', textTransform: 'uppercase' }}>
-              Delivery Details
-            </h2>
+          <form onSubmit={handleSubmit} className="mm-checkout-card mm-checkout-form">
+            <h2>Delivery details</h2>
 
-            <div>
-              <label style={labelStyle}>Full Name *</label>
-              <input
-                type="text"
-                required
-                placeholder="Your Full Name"
-                value={orderForm.customerName}
-                onChange={(e) => setOrderForm({ ...orderForm, customerName: e.target.value })}
-                className="insp-input"
-              />
-            </div>
+            <label className="mm-field">
+              <span>Full name *</span>
+              <input type="text" required value={form.customerName} onChange={update('customerName')} placeholder="Your full name" />
+            </label>
 
             <div className="checkout-row">
-              <div>
-                <label style={labelStyle}>Phone / WhatsApp *</label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="10-digit mobile"
-                  value={orderForm.phone}
-                  onChange={(e) => setOrderForm({ ...orderForm, phone: e.target.value })}
-                  className="insp-input"
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Email Address</label>
-                <input
-                  type="email"
-                  placeholder="For tracking receipt"
-                  value={orderForm.email}
-                  onChange={(e) => setOrderForm({ ...orderForm, email: e.target.value })}
-                  className="insp-input"
-                />
-              </div>
+              <label className="mm-field">
+                <span>Phone *</span>
+                <input type="tel" required pattern="[0-9+\s-]{10,15}" value={form.phone} onChange={update('phone')} placeholder="10-digit mobile" />
+              </label>
+              <label className="mm-field">
+                <span>Email *</span>
+                <input type="email" required value={form.email} onChange={update('email')} placeholder="For your order receipt" />
+              </label>
             </div>
 
-            <div>
-              <label style={labelStyle}>Delivery Street Address *</label>
-              <textarea
-                required
-                placeholder="House/Flat No, Landmark, Area"
-                value={orderForm.address}
-                onChange={(e) => setOrderForm({ ...orderForm, address: e.target.value })}
-                className="insp-textarea"
-                style={{ minHeight: '80px' }}
-              ></textarea>
-            </div>
+            <label className="mm-field">
+              <span>Address *</span>
+              <textarea required rows={3} value={form.address} onChange={update('address')} placeholder="House / flat no., street, landmark" />
+            </label>
 
             <div className="checkout-row">
-              <div>
-                <label style={labelStyle}>City *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="City / Town"
-                  value={orderForm.city}
-                  onChange={(e) => setOrderForm({ ...orderForm, city: e.target.value })}
-                  className="insp-input"
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Pincode *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="6-digit PIN"
-                  value={orderForm.pincode}
-                  onChange={(e) => setOrderForm({ ...orderForm, pincode: e.target.value })}
-                  className="insp-input"
-                />
-              </div>
+              <label className="mm-field">
+                <span>City *</span>
+                <input type="text" required value={form.city} onChange={update('city')} placeholder="City / town" />
+              </label>
+              <label className="mm-field">
+                <span>PIN code *</span>
+                <input type="text" required inputMode="numeric" pattern="[0-9]{6}" value={form.pincode} onChange={update('pincode')} placeholder="6-digit PIN" />
+              </label>
             </div>
 
-            <div>
-              <label style={labelStyle}>Payment Method</label>
-              <select
-                value={orderForm.paymentMethod}
-                onChange={(e) => setOrderForm({ ...orderForm, paymentMethod: e.target.value })}
-                className="insp-input"
-              >
-                <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
-                <option value="UPI / QR Code / WhatsApp Pay">UPI / QR Code / WhatsApp Pay</option>
-                <option value="Direct Bank Transfer">Direct Bank Transfer</option>
-              </select>
+            <label className="mm-field">
+              <span>State *</span>
+              <input type="text" required value={form.state} onChange={update('state')} placeholder="e.g. Maharashtra" />
+            </label>
+
+            <h2 className="mm-checkout-subhead">Payment</h2>
+            <div className="mm-pay-options">
+              {PAYMENT_OPTIONS.map((opt) => (
+                <label
+                  key={opt.value}
+                  className={`mm-pay-option ${form.paymentMethod === opt.value ? 'is-active' : ''} ${opt.disabled ? 'is-disabled' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value={opt.value}
+                    checked={form.paymentMethod === opt.value}
+                    disabled={opt.disabled}
+                    onChange={update('paymentMethod')}
+                  />
+                  <span>
+                    <strong>{opt.label}</strong>
+                    <small>{opt.hint}</small>
+                  </span>
+                </label>
+              ))}
             </div>
 
-            <button type="submit" className="btn-insp-primary" style={{ justifyContent: 'center', width: '100%', padding: '0.95rem', marginTop: '0.5rem' }}>
-              Confirm & Place Book Order
+            {error && <p className="mm-checkout-error">{error}</p>}
+
+            <button type="submit" className="btn-insp-primary mm-checkout-submit" disabled={placing}>
+              <FaLock size={12} /> {placing ? 'Placing order…' : `Place Order · ₹${total}`}
             </button>
           </form>
 
-          {/* Right: Order Summary */}
-          <aside className="checkout-summary" style={{ background: '#FFFFFF', borderRadius: '12px', padding: '1.75rem', boxShadow: '0 4px 15px rgba(0,0,0,0.04)' }}>
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--text-heading)', margin: '0 0 1.25rem 0', textTransform: 'uppercase' }}>
-              Order Summary
-            </h2>
+          <aside className="checkout-summary mm-checkout-card">
+            <h2>Order summary</h2>
+            <ul className="mm-summary-list">
+              {items.map((item) => (
+                <li key={item.key}>
+                  <img src={item.image} alt={item.title} />
+                  <div>
+                    <strong>{item.title}</strong>
+                    <small>{item.format} · ₹{item.price}</small>
+                    <div className="mm-qty mm-qty-sm">
+                      <button type="button" onClick={() => setQty(item.key, item.qty - 1)} disabled={item.qty <= 1} aria-label="Decrease quantity">
+                        <FaMinus size={9} />
+                      </button>
+                      <span>{item.qty}</span>
+                      <button type="button" onClick={() => setQty(item.key, item.qty + 1)} aria-label="Increase quantity">
+                        <FaPlus size={9} />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mm-summary-right">
+                    <strong>₹{item.price * item.qty}</strong>
+                    <button type="button" onClick={() => removeItem(item.key)} aria-label={`Remove ${item.title}`}>
+                      <FaTrashCan size={12} />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
 
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: 'var(--bg-main)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
-              <img src={book.image} alt={book.title} style={{ width: '64px', height: '88px', objectFit: 'cover', borderRadius: '4px', boxShadow: '0 6px 15px rgba(0,0,0,0.15)' }} />
-              <div>
-                <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem', fontFamily: 'var(--font-serif)', color: 'var(--text-heading)' }}>{book.title}</h3>
-                <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 700 }}>₹{book.price} per copy</span>
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={labelStyle}>Format</label>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                {FORMATS.map((fmt) => (
-                  <button
-                    key={fmt}
-                    type="button"
-                    onClick={() => setSelectedFormat(fmt)}
-                    style={{
-                      padding: '0.5rem 0.9rem',
-                      borderRadius: '6px',
-                      border: '1px solid',
-                      borderColor: selectedFormat === fmt ? 'var(--primary)' : 'var(--border-ui)',
-                      background: selectedFormat === fmt ? '#FFFFFF' : 'var(--bg-main)',
-                      color: selectedFormat === fmt ? 'var(--primary)' : 'var(--text-heading)',
-                      fontWeight: 700,
-                      fontSize: '0.8rem',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {fmt}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={labelStyle}>Quantity</label>
-              <input
-                type="number"
-                min="1"
-                max="20"
-                value={orderForm.quantity}
-                onChange={(e) => setOrderForm({ ...orderForm, quantity: e.target.value })}
-                className="insp-input"
-                style={{ maxWidth: '110px' }}
-              />
-            </div>
-
-            <div style={{ fontSize: '0.9rem', borderTop: '1px solid var(--border-ui)', paddingTop: '1rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Subtotal ({quantity} × ₹{book.price})</span>
-                <span>₹{total}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-ui)', paddingTop: '0.85rem' }}>
-                <span style={{ fontSize: '0.95rem', color: 'var(--text-heading)', fontWeight: 700 }}>Total to Pay</span>
-                <strong style={{ fontSize: '1.6rem', color: 'var(--primary)', fontFamily: 'var(--font-numbers)', fontWeight: 800 }}>
-                  ₹{total}
-                </strong>
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gap: '0.65rem', marginTop: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.8rem', color: 'var(--text-body)', fontWeight: 600 }}>
-                <FaTruck size={16} color="var(--primary)" /> Fast Doorstep Delivery
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.8rem', color: 'var(--text-body)', fontWeight: 600 }}>
-                <FaShieldHalved size={16} color="var(--primary)" /> Author Signed Copy
-              </div>
+            <div className="mm-summary-totals">
+              <div><span>Subtotal</span><span>₹{subtotal}</span></div>
+              {SHIPPING_FEE > 0 && <div><span>Shipping</span><span>₹{shipping}</span></div>}
+              <div className="mm-summary-total"><span>Total</span><strong>₹{total}</strong></div>
             </div>
           </aside>
         </div>
