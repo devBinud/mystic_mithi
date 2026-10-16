@@ -1,11 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import {
   FaBookOpen, FaCartShopping, FaPlus, FaTrash, FaPenToSquare,
-  FaFileCsv, FaMagnifyingGlass, FaWhatsapp, FaCheck, FaXmark,
+  FaFileCsv, FaMagnifyingGlass, FaWhatsapp, FaCheck, FaArrowLeft,
   FaArrowUpRightFromSquare, FaTruckFast, FaClock, FaBoxArchive
 } from 'react-icons/fa6';
 import AdminLayout from './AdminLayout';
+import BookForm from './BookForm';
+import DashboardOverview from './DashboardOverview';
 import {
   isAuthenticated,
   getBooks,
@@ -19,35 +21,18 @@ import {
 } from './adminStore';
 import './admin.css';
 // Updated for Mystic Mithi Author & Books Management
-export default function AdminDashboard() {
+// `section` comes from the route in App.jsx: dashboard, books, add-book, edit-book, orders or settings
+export default function AdminDashboard({ section = 'dashboard' }) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('books');
-  const [books, setBooks] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const { bookId } = useParams();
+  // Read straight from localStorage on first render so /admin/books/:bookId/edit can fill its form immediately
+  const [books, setBooks] = useState(getBooks);
+  const [orders, setOrders] = useState(getOrders);
 
   // Search & Filters
   const [bookSearch, setBookSearch] = useState('');
   const [orderSearch, setOrderSearch] = useState('');
   const [orderStatusFilter, setOrderStatusFilter] = useState('All');
-
-  // Book Modal (Add / Edit)
-  const [isBookModalOpen, setIsBookModalOpen] = useState(false);
-  const [editingBookId, setEditingBookId] = useState(null);
-  const [bookForm, setBookForm] = useState({
-    title: '',
-    subtitle: '',
-    genre: 'Poetry & Musings',
-    price: 399,
-    originalPrice: 499,
-    image: '',
-    description: '',
-    pages: 200,
-    publisher: '',
-    isbn: '',
-    format: 'Paperback',
-    inStock: true,
-    featured: false
-  });
 
   // Settings State
   const [settingsSaved, setSettingsSaved] = useState(false);
@@ -65,10 +50,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (!isAuthenticated()) {
       navigate('/admin/login', { replace: true });
-      return;
     }
-    setBooks(getBooks());
-    setOrders(getOrders());
   }, [navigate]);
 
   // Refresh lists
@@ -78,71 +60,25 @@ export default function AdminDashboard() {
   };
 
   // ================= BOOKS ACTIONS =================
-  const handleOpenAddBook = () => {
-    setEditingBookId(null);
-    setBookForm({
-      title: '',
-      subtitle: '',
-      genre: 'Poetry & Musings',
-      price: 399,
-      originalPrice: 499,
-      image: '',
-      description: '',
-      pages: 200,
-      publisher: '',
-      isbn: '978-93-5421-' + Math.floor(100 + Math.random() * 900),
-      format: 'Paperback',
-      inStock: true,
-      featured: false
-    });
-    setIsBookModalOpen(true);
-  };
+  const editingBook = section === 'edit-book'
+    ? books.find((b) => String(b.id) === bookId)
+    : null;
 
-  const handleOpenEditBook = (book) => {
-    setEditingBookId(book.id);
-    setBookForm({
-      title: book.title,
-      subtitle: book.subtitle || '',
-      genre: book.genre || 'General Literature',
-      price: book.price,
-      originalPrice: book.originalPrice || book.price,
-      image: book.image || '',
-      description: book.description || '',
-      pages: book.pages || 200,
-      publisher: book.publisher || '',
-      isbn: book.isbn || '',
-      format: book.format || 'Paperback',
-      inStock: book.inStock !== false,
-      featured: !!book.featured
-    });
-    setIsBookModalOpen(true);
-  };
-
-  const handleSaveBook = (e) => {
-    e.preventDefault();
-    if (!bookForm.title || !bookForm.price) return;
-
-    if (editingBookId) {
-      updateBook(editingBookId, bookForm);
-    } else {
-      addBook(bookForm);
-    }
-
+  const handleAddBook = (values) => {
+    addBook(values);
     refreshData();
-    setIsBookModalOpen(false);
+    navigate('/admin/books');
+  };
+
+  const handleUpdateBook = (values) => {
+    updateBook(editingBook.id, values);
+    refreshData();
+    navigate('/admin/books');
   };
 
   const handleDeleteBook = (id) => {
     if (window.confirm('Are you sure you want to delete this book from the catalog?')) {
       deleteBook(id);
-      refreshData();
-    }
-  };
-
-  const handleQuickPriceChange = (book) => {
-    const newPrice = window.prompt(`Enter new selling price for "${book.title}":`, book.price);
-    if (newPrice !== null && !isNaN(newPrice) && Number(newPrice) > 0) {
-      updateBook(book.id, { price: Number(newPrice) });
       refreshData();
     }
   };
@@ -219,10 +155,13 @@ export default function AdminDashboard() {
   }, [orders]);
 
   return (
-    <AdminLayout activeTab={activeTab} onTabChange={setActiveTab}>
+    <AdminLayout activeSection={section}>
       <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '1.5rem 0' }}>
+        {/* ================= DASHBOARD (/admin) ================= */}
+        {section === 'dashboard' && <DashboardOverview books={books} orders={orders} />}
+
         {/* ================= TAB 1: BOOKS ================= */}
-        {activeTab === 'books' && (
+        {section === 'books' && (
           <div>
             {/* Top Toolbar */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
@@ -236,38 +175,33 @@ export default function AdminDashboard() {
               </div>
 
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button
-                  type="button"
-                  onClick={handleOpenAddBook}
+                <Link
+                  to="/admin/books/new"
                   className="btn-insp-primary"
                   style={{ fontSize: '0.82rem', padding: '0.65rem 1.25rem' }}
                 >
                   <FaPlus size={12} /> Add New Book
-                </button>
+                </Link>
               </div>
             </div>
 
             {/* Metrics Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
-              <div style={{ background: '#FFFFFF', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border-ui)' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Total Books in Catalog</span>
-                <div style={{ fontFamily: 'var(--font-numbers)', fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', marginTop: '4px' }}>
-                  {books.length}
-                </div>
+            <div className="dash-stats dash-stats-compact">
+              <div className="dash-card dash-stat">
+                <span className="dash-stat-label">Books in Catalog</span>
+                <div className="dash-stat-value is-accent">{books.length}</div>
               </div>
 
-              <div style={{ background: '#FFFFFF', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border-ui)' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Active in Stock</span>
-                <div style={{ fontFamily: 'var(--font-numbers)', fontSize: '2rem', fontWeight: 800, color: '#166534', marginTop: '4px' }}>
+              <div className="dash-card dash-stat">
+                <span className="dash-stat-label">In Stock</span>
+                <div className="dash-stat-value" style={{ color: '#166534' }}>
                   {books.filter(b => b.inStock !== false).length}
                 </div>
               </div>
 
-              <div style={{ background: '#FFFFFF', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border-ui)' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Total Orders Placed</span>
-                <div style={{ fontFamily: 'var(--font-numbers)', fontSize: '2rem', fontWeight: 800, color: 'var(--text-heading)', marginTop: '4px' }}>
-                  {orders.length}
-                </div>
+              <div className="dash-card dash-stat">
+                <span className="dash-stat-label">Total Orders</span>
+                <div className="dash-stat-value">{orders.length}</div>
               </div>
             </div>
 
@@ -283,8 +217,8 @@ export default function AdminDashboard() {
               />
             </div>
 
-            {/* Books Table */}
-            <div style={{ background: '#FFFFFF', borderRadius: '8px', border: '1px solid var(--border-ui)', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+            {/* Books Table (desktop / tablet) */}
+            <div className="admin-books-table" style={{ background: '#FFFFFF', borderRadius: '8px', border: '1px solid var(--border-ui)', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
                   <thead>
@@ -339,22 +273,14 @@ export default function AdminDashboard() {
                         </td>
                         <td style={{ padding: '1rem', textAlign: 'right' }}>
                           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                            <button
-                              type="button"
-                              onClick={() => handleQuickPriceChange(book)}
-                              title="Quick Change Price"
-                              style={{ padding: '0.4rem 0.65rem', border: '1px solid var(--border-ui)', borderRadius: '4px', background: '#FFFFFF', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 700 }}
-                            >
-                              ₹ Change Price
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleOpenEditBook(book)}
+                            <Link
+                              to={`/admin/books/${encodeURIComponent(book.id)}/edit`}
                               title="Edit Book Details"
-                              style={{ padding: '0.4rem 0.65rem', border: '1px solid var(--border-ui)', borderRadius: '4px', background: '#FFFFFF', cursor: 'pointer', color: 'var(--text-heading)' }}
+                              aria-label={`Edit ${book.title}`}
+                              style={{ display: 'inline-flex', alignItems: 'center', padding: '0.4rem 0.65rem', border: '1px solid var(--border-ui)', borderRadius: '4px', background: '#FFFFFF', color: 'var(--text-heading)' }}
                             >
                               <FaPenToSquare size={13} />
-                            </button>
+                            </Link>
                             <button
                               type="button"
                               onClick={() => handleDeleteBook(book.id)}
@@ -371,11 +297,89 @@ export default function AdminDashboard() {
                 </table>
               </div>
             </div>
+
+            {/* Books as cards on phones, where the table is hidden */}
+            <ul className="admin-book-cards">
+              {filteredBooks.map((book) => (
+                <li key={book.id} className="admin-book-card">
+                  <img src={book.image} alt={book.title} className="admin-book-card-cover" />
+                  <div className="admin-book-card-body">
+                    <div className="admin-book-card-title">{book.title}</div>
+                    {book.subtitle && <div className="admin-book-card-subtitle">{book.subtitle}</div>}
+                    <div className="admin-book-card-meta">
+                      <span className="admin-book-card-price">₹{book.price}</span>
+                      <span className="admin-book-card-tag">{book.genre}</span>
+                      <span className={`admin-book-card-tag ${book.inStock ? 'is-in-stock' : 'is-out-of-stock'}`}>
+                        {book.inStock ? 'In Stock' : 'Out of Stock'}
+                      </span>
+                    </div>
+                    <div className="admin-book-card-actions">
+                      <Link to={`/admin/books/${encodeURIComponent(book.id)}/edit`} className="admin-book-card-edit">
+                        <FaPenToSquare size={12} /> Edit
+                      </Link>
+                      <button
+                        type="button"
+                        className="admin-book-card-delete"
+                        onClick={() => handleDeleteBook(book.id)}
+                        aria-label={`Delete ${book.title}`}
+                        title="Delete Book"
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* ================= ADD NEW BOOK (/admin/books/new) ================= */}
+        {section === 'add-book' && (
+          <div style={{ maxWidth: '780px' }}>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', color: 'var(--text-heading)', margin: '0 0 0.35rem 0' }}>
+              Add New Book
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '2rem' }}>
+              Fill in the details below to publish a new title to your store catalog.
+            </p>
+
+            <div className="admin-form-card">
+              <BookForm onSave={handleAddBook} onCancel={() => navigate('/admin/books')} />
+            </div>
+          </div>
+        )}
+
+        {/* ================= EDIT BOOK (/admin/books/:bookId/edit) ================= */}
+        {section === 'edit-book' && (
+          <div style={{ maxWidth: '780px' }}>
+            <Link to="/admin/books" className="admin-back-link">
+              <FaArrowLeft size={11} /> Back to All Books
+            </Link>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', color: 'var(--text-heading)', margin: '0 0 0.35rem 0' }}>
+              {editingBook ? 'Edit Book' : 'Book Not Found'}
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '2rem' }}>
+              {editingBook
+                ? `Update the details for “${editingBook.title}” and save your changes.`
+                : 'This book may have been deleted. Go back to your catalog to choose another one.'}
+            </p>
+
+            {editingBook && (
+              <div className="admin-form-card">
+                <BookForm
+                  key={editingBook.id}
+                  book={editingBook}
+                  onSave={handleUpdateBook}
+                  onCancel={() => navigate('/admin/books')}
+                />
+              </div>
+            )}
           </div>
         )}
 
         {/* ================= TAB 2: ORDERS ================= */}
-        {activeTab === 'orders' && (
+        {section === 'orders' && (
           <div>
             {/* Orders Header */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
@@ -585,7 +589,7 @@ export default function AdminDashboard() {
         )}
 
         {/* ================= TAB 3: SETTINGS ================= */}
-        {activeTab === 'settings' && (
+        {section === 'settings' && (
           <div style={{ maxWidth: '780px' }}>
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.85rem', color: 'var(--text-heading)', margin: '0 0 0.35rem 0' }}>
               Author & Publishing Settings
@@ -600,9 +604,9 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            <div style={{ background: '#FFFFFF', padding: '2.5rem', borderRadius: '8px', border: '1px solid var(--border-ui)' }}>
+            <div className="admin-form-card">
               <form onSubmit={(e) => { e.preventDefault(); setSettingsSaved(true); setTimeout(() => setSettingsSaved(false), 3000); }} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Author Pen Name</label>
                     <input
@@ -623,7 +627,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>WhatsApp Number for Orders</label>
                     <input
@@ -654,7 +658,7 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Instagram Profile URL</label>
                     <input
@@ -675,7 +679,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--border-ui)' }}>
+                <div className="admin-form-actions" style={{ justifyContent: 'flex-start', marginTop: 0, paddingTop: '1rem', borderTop: '1px solid var(--border-ui)' }}>
                   <button type="submit" className="btn-insp-primary">
                     Save Publishing Settings
                   </button>
@@ -685,206 +689,6 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
-
-      {/* ================= ADD / EDIT BOOK MODAL ================= */}
-      {isBookModalOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.65)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            padding: '1.5rem',
-            backdropFilter: 'blur(3px)'
-          }}
-          onClick={() => setIsBookModalOpen(false)}
-        >
-          <div
-            style={{
-              background: '#FFFFFF',
-              borderRadius: '12px',
-              maxWidth: '680px',
-              width: '100%',
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              padding: '2.25rem',
-              position: 'relative',
-              boxShadow: '0 25px 60px rgba(0,0,0,0.3)'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setIsBookModalOpen(false)}
-              style={{
-                position: 'absolute',
-                top: '1.25rem',
-                right: '1.25rem',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                color: 'var(--text-muted)'
-              }}
-            >
-              <FaXmark size={20} />
-            </button>
-
-            <span className="insp-eyebrow">CATALOG MANAGEMENT</span>
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem', color: 'var(--text-heading)', margin: '0 0 1.5rem 0' }}>
-              {editingBookId ? 'Edit Book Details' : 'Add New Book'}
-            </h2>
-
-            <form onSubmit={handleSaveBook} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Book Title *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. When the Mystic Meets a Starfish"
-                  value={bookForm.title}
-                  onChange={(e) => setBookForm({ ...bookForm, title: e.target.value })}
-                  className="insp-input"
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Subtitle / Tagline</label>
-                <input
-                  type="text"
-                  placeholder="e.g. A Journey Through Light and Shadows"
-                  value={bookForm.subtitle}
-                  onChange={(e) => setBookForm({ ...bookForm, subtitle: e.target.value })}
-                  className="insp-input"
-                />
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Genre / Category</label>
-                  <input
-                    type="text"
-                    value={bookForm.genre}
-                    onChange={(e) => setBookForm({ ...bookForm, genre: e.target.value })}
-                    className="insp-input"
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Format</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Paperback, Hardcover"
-                    value={bookForm.format}
-                    onChange={(e) => setBookForm({ ...bookForm, format: e.target.value })}
-                    className="insp-input"
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Selling Price (₹) *</label>
-                  <input
-                    type="number"
-                    required
-                    min="1"
-                    value={bookForm.price}
-                    onChange={(e) => setBookForm({ ...bookForm, price: e.target.value })}
-                    className="insp-input"
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Original MRP (₹)</label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={bookForm.originalPrice}
-                    onChange={(e) => setBookForm({ ...bookForm, originalPrice: e.target.value })}
-                    className="insp-input"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Book Cover Image URL / Path</label>
-                <input
-                  type="text"
-                  placeholder="URL or image path"
-                  value={bookForm.image}
-                  onChange={(e) => setBookForm({ ...bookForm, image: e.target.value })}
-                  className="insp-input"
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Book Description / Synopsis</label>
-                <textarea
-                  rows="4"
-                  placeholder="Describe the themes, emotional journey, and chapters..."
-                  value={bookForm.description}
-                  onChange={(e) => setBookForm({ ...bookForm, description: e.target.value })}
-                  className="insp-textarea"
-                ></textarea>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Page Count</label>
-                  <input
-                    type="number"
-                    value={bookForm.pages}
-                    onChange={(e) => setBookForm({ ...bookForm, pages: e.target.value })}
-                    className="insp-input"
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>ISBN Number</label>
-                  <input
-                    type="text"
-                    value={bookForm.isbn}
-                    onChange={(e) => setBookForm({ ...bookForm, isbn: e.target.value })}
-                    className="insp-input"
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '2rem', padding: '0.5rem 0' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.88rem' }}>
-                  <input
-                    type="checkbox"
-                    checked={bookForm.inStock}
-                    onChange={(e) => setBookForm({ ...bookForm, inStock: e.target.checked })}
-                  />
-                  <span>Mark as In Stock</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.88rem' }}>
-                  <input
-                    type="checkbox"
-                    checked={bookForm.featured}
-                    onChange={(e) => setBookForm({ ...bookForm, featured: e.target.checked })}
-                  />
-                  <span>Feature on Homepage</span>
-                </label>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
-                <button
-                  type="button"
-                  onClick={() => setIsBookModalOpen(false)}
-                  className="btn-insp-secondary"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn-insp-primary">
-                  {editingBookId ? 'Save Changes' : 'Publish Book to Catalog'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </AdminLayout>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import FloatingWidgets from './components/FloatingWidgets'
@@ -35,8 +35,15 @@ function App() {
       <>
         <ScrollToTop />
         <Routes>
-          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminDashboard section="dashboard" />} />
+          <Route path="/admin/books" element={<AdminDashboard section="books" />} />
+          <Route path="/admin/books/new" element={<AdminDashboard section="add-book" />} />
+          <Route path="/admin/books/:bookId/edit" element={<AdminDashboard section="edit-book" />} />
+          <Route path="/admin/orders" element={<AdminDashboard section="orders" />} />
+          <Route path="/admin/settings" element={<AdminDashboard section="settings" />} />
+          {/* Any unknown admin path lands on the dashboard */}
+          <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
         </Routes>
       </>
     );

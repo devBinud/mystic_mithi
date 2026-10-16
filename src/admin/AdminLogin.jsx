@@ -1,8 +1,7 @@
 // src/admin/AdminLogin.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaLock, FaUser, FaCircleExclamation, FaEye, FaEyeSlash, FaArrowLeft } from 'react-icons/fa6';
-import logoImg from '../logo.jpeg';
+import { FaLock, FaUser, FaCircleExclamation, FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { isAuthenticated, login } from './adminStore';
 import './admin.css';
 
@@ -35,11 +34,9 @@ export default function AdminLogin() {
     <div className="admin-login-container">
       <div className="admin-login-card">
         <div className="admin-login-header">
-          <div className="admin-logo-wrapper" style={{ background: '#FFFFFF', padding: '6px', borderRadius: '8px' }}>
-            <img src={logoImg} alt="Mystic Mithi Logo" className="admin-login-logo" style={{ maxHeight: '45px', objectFit: 'contain' }} />
-          </div>
-          <h1 className="admin-login-title">Author Portal</h1>
-          <p className="admin-login-subtitle">Sign in to manage books, prices, and reader orders</p>
+          <Link to="/" className="admin-login-brand" aria-label="Mystic Mithi home">Mystic Mithi</Link>
+          <span className="admin-login-rule" aria-hidden="true" />
+          <h1 className="admin-login-title">Admin Portal</h1>
         </div>
 
         {error && (
@@ -51,13 +48,15 @@ export default function AdminLogin() {
 
         <form onSubmit={handleSubmit}>
           <div className="admin-form-group">
-            <label className="admin-form-label">Username</label>
+            <label className="admin-form-label" htmlFor="admin-username">Username</label>
             <div className="admin-input-wrapper">
               <FaUser className="admin-input-icon" />
               <input
+                id="admin-username"
                 type="text"
                 className="admin-form-input"
-                placeholder="Enter username (e.g. mithi or admin)"
+                placeholder="Enter your username"
+                autoComplete="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -66,13 +65,15 @@ export default function AdminLogin() {
           </div>
 
           <div className="admin-form-group">
-            <label className="admin-form-label">Password</label>
+            <label className="admin-form-label" htmlFor="admin-password">Password</label>
             <div className="admin-input-wrapper">
               <FaLock className="admin-input-icon" />
               <input
+                id="admin-password"
                 type={showPassword ? 'text' : 'password'}
                 className="admin-form-input has-right-icon"
                 placeholder="Enter password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -89,16 +90,10 @@ export default function AdminLogin() {
             </div>
           </div>
 
-          <button type="submit" className="admin-btn-primary" style={{ marginTop: '1.25rem', background: 'var(--primary)', borderColor: 'var(--primary)' }}>
-            Sign In to Desk
+          <button type="submit" className="admin-btn-primary">
+            Sign In
           </button>
         </form>
-
-        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-          <Link to="/" style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <FaArrowLeft size={11} /> Return to Public Website
-          </Link>
-        </div>
       </div>
     </div>
   );

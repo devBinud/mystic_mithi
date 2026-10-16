@@ -5419,6 +5419,14 @@ body.drawer-open .floating-widgets-stack {
   line-height: 1.1;
 }
 
+/* The global mobile rule shrinks every h2 to 1.5rem; keep this script heading large */
+@media (max-width: 820px) {
+  .mm-section-script {
+    font-size: 2.2rem !important;
+    margin-bottom: 2rem;
+  }
+}
+
 /* ---------- Header ---------- */
 .mm-topbar {
   background: var(--plum);
@@ -5787,6 +5795,17 @@ main {
 /* ---------- My Latest Book ---------- */
 .insp-walkaway-section {
   background: var(--bg-main);
+}
+
+/* Tighter gap between the books grid and the "My Latest Book" heading on phones */
+@media (max-width: 820px) {
+  .mm-books {
+    padding-bottom: 3rem;
+  }
+
+  .insp-walkaway-section {
+    padding-top: 3rem;
+  }
 }
 
 .mm-book-title {
