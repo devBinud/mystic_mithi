@@ -2,7 +2,66 @@ import { useState, useEffect } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import { FaXmark, FaInstagram, FaFacebookF, FaWhatsapp } from 'react-icons/fa6'
 import { useCart } from '../cart/useCart'
-import { FiMenu, FiShoppingBag } from 'react-icons/fi'
+import { FiMenu, FiShoppingBag, FiChevronDown } from 'react-icons/fi'
+import { NAV_LEFT, NAV_RIGHT } from '../data/navigation'
+
+const linkClass = (base) => ({ isActive }) => (isActive ? `${base} active` : base);
+
+// Desktop dropdown: opens on hover, or on click/keyboard via the toggle button.
+function NavGroup({ group }) {
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const active = group.items.some((item) => pathname.startsWith(item.to));
+
+  return (
+    <li
+      className={`mm-nav-group ${open ? 'is-open' : ''}`}
+      onMouseLeave={() => setOpen(false)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') setOpen(false);
+      }}
+    >
+      <button
+        type="button"
+        className={`nav-link mm-nav-group-btn ${active ? 'active' : ''}`}
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {group.label} <FiChevronDown size={13} />
+      </button>
+      <ul className="mm-nav-menu">
+        {group.items.map((item) => (
+          <li key={item.to}>
+            <NavLink to={item.to} className={linkClass('mm-nav-menu-link')} onClick={() => setOpen(false)}>
+              {item.label}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </li>
+  );
+}
+
+function DesktopNav({ items, className }) {
+  return (
+    <ul className={`nav-links desktop-nav ${className}`}>
+      {items.map((item) =>
+        item.items ? (
+          <NavGroup key={item.label} group={item} />
+        ) : (
+          <li key={item.to}>
+            <NavLink to={item.to} className={linkClass('nav-link')} end={item.end}>
+              {item.label}
+            </NavLink>
+          </li>
+        )
+      )}
+    </ul>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -63,45 +122,13 @@ export default function Navbar() {
       {/* Main Navbar */}
       <nav className={`cureo-navbar mm-navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
         <div className="header-content mm-header">
-          <ul className="nav-links desktop-nav mm-nav-left">
-            <li>
-              <NavLink to="/" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")} end>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/books" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-                Books
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/about" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-                About
-              </NavLink>
-            </li>
-          </ul>
+          <DesktopNav items={NAV_LEFT} className="mm-nav-left" />
 
           <Link to="/" className="mm-logo" aria-label="Mystic Mithi home">
             <span className="mm-logo-script">Mystic Mithi</span>
           </Link>
 
-          <ul className="nav-links desktop-nav mm-nav-right">
-            <li>
-              <NavLink to="/faq" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-                FAQ
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/contact" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-                Contact
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/books" className="nav-link mm-nav-cta">
-                Shop Books
-              </NavLink>
-            </li>
-          </ul>
+          <DesktopNav items={NAV_RIGHT} className="mm-nav-right" />
 
           <button type="button" className="mm-cart-btn" onClick={openDrawer} aria-label={`Open cart, ${count} items`}>
             <FiShoppingBag size={21} strokeWidth={1.8} />
@@ -147,37 +174,22 @@ export default function Navbar() {
 
         <div className="drawer-body">
           <nav className="drawer-links-list">
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "drawer-link active" : "drawer-link")}
-              end
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to="/books"
-              className={({ isActive }) => (isActive ? "drawer-link active" : "drawer-link")}
-            >
-              Books
-            </NavLink>
-            <NavLink
-              to="/about"
-              className={({ isActive }) => (isActive ? "drawer-link active" : "drawer-link")}
-            >
-              About
-            </NavLink>
-            <NavLink
-              to="/faq"
-              className={({ isActive }) => (isActive ? "drawer-link active" : "drawer-link")}
-            >
-              FAQ
-            </NavLink>
-            <NavLink
-              to="/contact"
-              className={({ isActive }) => (isActive ? "drawer-link active" : "drawer-link")}
-            >
-              Contact
-            </NavLink>
+            {[...NAV_LEFT, ...NAV_RIGHT].map((item) =>
+              item.items ? (
+                <div key={item.label} className="mm-drawer-group">
+                  <span className="mm-drawer-group-label">{item.label}</span>
+                  {item.items.map((sub) => (
+                    <NavLink key={sub.to} to={sub.to} className={linkClass('drawer-link')}>
+                      {sub.label}
+                    </NavLink>
+                  ))}
+                </div>
+              ) : (
+                <NavLink key={item.to} to={item.to} className={linkClass('drawer-link')} end={item.end}>
+                  {item.label}
+                </NavLink>
+              )
+            )}
           </nav>
 
           <div className="drawer-action">

@@ -5,11 +5,11 @@ import caravanImg from '../assets/books/caravan_of_the_cosmos.jpeg';
 const BOOKS_STORAGE_KEY = 'mystic_author_books';
 const BOOKS_VERSION_KEY = 'mystic_author_books_version';
 // Bump this whenever INITIAL_BOOKS changes so browsers drop their cached copy.
-const BOOKS_VERSION = '2';
+const BOOKS_VERSION = '3';
 const ORDERS_STORAGE_KEY = 'mystic_author_orders';
 const AUTH_STORAGE_KEY = 'mystic_author_auth';
 
-// TODO: confirm price, page count, ISBN and year for both books (editable from the admin dashboard).
+// Publisher, date and ISBN from the author's portfolio (authors_bio/). TODO: confirm price and page count.
 export const INITIAL_BOOKS = [
   {
     id: 'when-the-mystic-meets-a-starfish',
@@ -30,9 +30,9 @@ My inspiration is Jalāl ad-Dīn Muhammad Rūmī. The grace and magic of Rumi's 
 
 I only wanted to convey and share "The Deepness" with readers. I encourage everyone to know the deepness as a way of life — for getting a pearl, you have to dive into the deep ocean.`,
     pages: null,
-    publisher: '',
-    publishedYear: '',
-    isbn: '',
+    publisher: 'Delhi Poetry Slam',
+    publishedYear: '25 July 2020',
+    isbn: '9788194478515',
     language: 'English',
     format: 'Paperback',
     formats: ['Paperback'],
@@ -56,9 +56,9 @@ While taking a stroll through the poems, it feels as if you are travelling throu
 
 The stems of the literary compositions in this collection are resplendently engraved in theology, science, psychology, mythology, history, geography, philosophy, literature, art, and medieval and renaissance discoveries.`,
     pages: null,
-    publisher: 'The Write Order',
-    publishedYear: '',
-    isbn: '',
+    publisher: 'The Write Order Publications',
+    publishedYear: '31 May 2022',
+    isbn: '9789355651594',
     language: 'English',
     format: 'Paperback',
     formats: ['Paperback'],

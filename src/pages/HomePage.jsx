@@ -12,6 +12,8 @@ import authorImg from '../assets/author.jpg';
 import caravanImg from '../assets/books/caravan_of_the_cosmos.jpeg';
 import { getBooks } from '../admin/adminStore';
 import BookCard from '../components/BookCard';
+import { reviews, interviews, publishedPoems, awards, libraryFootprint, libraryCount, footprintMarkers } from '../data/portfolio';
+import FootprintGlobe from '../components/FootprintGlobe';
 
 // Lines taken from the author's own notes on her books.
 const excerpts = [
@@ -44,40 +46,6 @@ const excerpts = [
     text: 'A mélange of melodic poems rendering the philosophy of the cosmos and its harmony.',
     book: 'Caravan to the Cosmos',
     piece: 'about the book'
-  }
-];
-
-// TODO: placeholder reviews — replace with real reader reviews before launch
-const reviews = [
-  {
-    name: 'Debjani Sarma',
-    city: 'Kolkata',
-    book: 'When the Mystic Meets a Starfish',
-    text: 'Reading ‘When the Mystic Meets a Starfish’ felt like someone sitting beside me in the dark and holding my hand without asking why I was crying. Her words have an almost sacred gentleness to them.'
-  },
-  {
-    name: 'Rahul Sen',
-    city: 'Bangalore',
-    book: 'Caravan to the Cosmos',
-    text: '‘Caravan to the Cosmos’ is the kind of book you read with a pencil in hand. Every few lines demand to be underlined — science, myth and philosophy woven into music.'
-  },
-  {
-    name: 'Priyanka Mehta',
-    city: 'Mumbai',
-    book: 'When the Mystic Meets a Starfish',
-    text: 'I ordered a signed copy as a gift for myself. It arrived beautifully packaged with an author note. Truly one of the most moving poetry collections I have read this year.'
-  },
-  {
-    name: 'Ankita Sharma',
-    city: 'Pune',
-    book: 'When the Mystic Meets a Starfish',
-    text: 'I keep this book on my nightstand and open it to a random page whenever the day feels heavy. Somehow it always knows exactly what I needed to hear.'
-  },
-  {
-    name: 'Sneha Kapoor',
-    city: 'New Delhi',
-    book: 'Caravan to the Cosmos',
-    text: 'Quiet, thoughtful and deeply honest. I finished it in one sitting and then started it again the very next morning.'
   }
 ];
 
@@ -235,13 +203,14 @@ export default function HomePage() {
         </div>
         <div className="mm-hello-body">
           <p>
-            I&rsquo;m a deep thinker and keen observer, an empath, perpetually poetic &mdash; a worshipper of words.
-            The grace and magic of Rumi&rsquo;s poems inspired me to write about mystical love, life and inspiration.
+            I&rsquo;m <strong>Madhushree Das</strong>, an Indian poet writing as <strong>_Inkling Ink</strong>. An engineer by
+            degree, I found my true voice in poetry &mdash; in <em>When the Mystic Meets a Starfish</em> and
+            <em> Caravan to the Cosmos</em>, now held in libraries across {libraryFootprint.length} countries.
           </p>
-          <p>
-            Writing as <strong>_Inkling Ink</strong>, I have published two poetry collections, <em>When the Mystic Meets a Starfish</em> and
-            <em> Caravan to the Cosmos</em>. I only want to share &ldquo;the deepness&rdquo; with readers &mdash; because for getting a
-            pearl, you have to dive into the deep ocean.
+          <p className="mm-hello-statement">
+            &ldquo;Poetry allows us to witness both the silence within and the vastness beyond. I hope that my words become
+            companions to readers &mdash; offering comfort during uncertainty, courage during transformation, and wonder
+            throughout life&rsquo;s journey.&rdquo;
           </p>
           <Link to="/about" className="mm-hello-link">
             Read my story <FaArrowRight size={12} />
@@ -333,12 +302,12 @@ export default function HomePage() {
               <span>Published poetry collections</span>
             </div>
             <div>
-              <strong>_Inkling Ink</strong>
-              <span>The pen name behind the poems</span>
+              <strong>{libraryCount}</strong>
+              <span>Libraries holding her books</span>
             </div>
             <div>
-              <strong>&infin;</strong>
-              <span>Poems still waiting to be written</span>
+              <strong>{libraryFootprint.length}</strong>
+              <span>Countries, five continents</span>
             </div>
           </div>
         </div>
@@ -377,6 +346,55 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* IN THE PRESS & IN PRINT */}
+      <section className="mm-press">
+        <div className="insp-container">
+          <div className="mm-divider"><span>In the press &amp; in print</span></div>
+          <div className="mm-press-grid">
+            <Link to="/interviews" className="mm-press-feature">
+              <span className="mm-press-kind">{interviews[0].kind} &middot; {interviews[0].outlet}</span>
+              <blockquote>&ldquo;{interviews[0].quotes[0]}&rdquo;</blockquote>
+              <span className="mm-text-link">
+                Read the interview <FaArrowRight size={11} />
+              </span>
+            </Link>
+
+            <div className="mm-press-side">
+              <Link to="/poems" className="mm-press-item">
+                <span className="mm-press-kind">Published poem &middot; {publishedPoems[0].publication}</span>
+                <strong className="mm-script">{publishedPoems[0].title}</strong>
+              </Link>
+              <Link to="/publications" className="mm-press-item">
+                <span className="mm-press-kind">Bibliography</span>
+                <strong>Literary Publications</strong>
+              </Link>
+              <Link to="/awards" className="mm-press-item">
+                <span className="mm-press-kind">Award &middot; {awards[0].presenter}, {awards[0].year}</span>
+                <strong>{awards[0].title}</strong>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* GLOBAL LITERARY FOOTPRINT */}
+      <section className="mm-footprint-band">
+        <div className="insp-container mm-footprint-band-grid">
+          <div className="mm-footprint-band-copy">
+            <span className="insp-eyebrow">GLOBAL LITERARY FOOTPRINT</span>
+            <h2 className="mm-script">Words travel farther than oceans.</h2>
+            <p>
+              Her poetry now rests on the shelves of {libraryCount} libraries in {libraryFootprint.length} countries
+              &mdash; from Harvard and Oxford&rsquo;s Bodleian to the Bibliotheca Alexandrina, Singapore and Taiwan.
+            </p>
+            <Link to="/global-footprint" className="btn-insp-primary">
+              Explore the Global Journey <FaArrowRight size={12} />
+            </Link>
+          </div>
+          <FootprintGlobe markers={footprintMarkers} interactive={false} />
+        </div>
+      </section>
+
       {/* 5. READER REVIEWS */}
       <section className="insp-reviews-section">
         <div className="insp-container">
@@ -384,11 +402,17 @@ export default function HomePage() {
             <span className="insp-eyebrow">READER EXPERIENCES</span>
             <h2 className="insp-section-title">THESE BOOKS TOUCHED SOULS.</h2>
             <p className="insp-section-subtitle" style={{ margin: '0 auto' }}>
-              Hear from readers who found solace, beauty, and quiet healing in Mystic Mithi’s published pages.
+              Hear from readers who found solace, beauty, and quiet healing in Madhushree Das’s published pages.
             </p>
           </div>
 
           <ReviewSlider reviews={reviews} />
+
+          <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+            <Link to="/reviews" className="mm-text-link">
+              Read all reviews <FaArrowRight size={11} />
+            </Link>
+          </div>
         </div>
       </section>
 

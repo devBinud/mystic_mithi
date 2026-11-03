@@ -11,6 +11,13 @@ import CheckoutPage from './pages/CheckoutPage'
 import ContactPage from './pages/ContactPage'
 import FaqPage from './pages/FaqPage'
 import BuyNowRedirect from './pages/BuyNowRedirect'
+import PoemsPage from './pages/PoemsPage'
+import InterviewsPage from './pages/InterviewsPage'
+import PublicationsPage from './pages/PublicationsPage'
+import AwardsPage from './pages/AwardsPage'
+import ReviewsPage from './pages/ReviewsPage'
+import GalleryPage from './pages/GalleryPage'
+import GlobalFootprintPage from './pages/GlobalFootprintPage'
 import CartDrawer from './components/CartDrawer'
 import ScrollReveal from './components/ScrollReveal'
 import AdminDashboard from './admin/AdminDashboard'
@@ -62,10 +69,15 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/checkout/:id" element={<BuyNowRedirect />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/poems" element={<PoemsPage />} />
+          <Route path="/interviews" element={<InterviewsPage />} />
+          <Route path="/publications" element={<PublicationsPage />} />
+          <Route path="/awards" element={<AwardsPage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/global-footprint" element={<GlobalFootprintPage />} />
           <Route path="/faq" element={<FaqPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          {/* Legacy route fallback */}
-          <Route path="/appointment" element={<BooksPage />} />
         </Routes>
       </main>
 

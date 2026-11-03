@@ -1,9 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { FaStar, FaArrowLeft, FaTruck, FaShieldHalved } from 'react-icons/fa6';
+import { FaStar, FaArrowLeft, FaTruck, FaShieldHalved, FaAmazon, FaGoodreadsG, FaGoogle, FaBook } from 'react-icons/fa6';
 import { getBookById } from '../admin/adminStore';
+import { bookLinks } from '../data/portfolio';
 import { useCart } from '../cart/useCart';
 import { BOOK_FORMATS } from '../cart/cartContext';
+
+const STORE_ICONS = { Amazon: FaAmazon, Goodreads: FaGoodreadsG, Google: FaGoogle };
 
 export default function BookDetailPage() {
   const { id } = useParams();
@@ -173,6 +176,23 @@ export default function BookDetailPage() {
                 Buy Now
               </button>
             </div>
+
+            {/* Other stores */}
+            {bookLinks[book.id]?.length > 0 && (
+              <div className="mm-book-stores">
+                <span>Also available on</span>
+                <div>
+                  {bookLinks[book.id].map(({ store, url }) => {
+                    const Icon = STORE_ICONS[store] || FaBook;
+                    return (
+                      <a key={store} href={url} target="_blank" rel="noopener noreferrer">
+                        <Icon size={14} /> {store}
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Synopsis */}
             <div style={{ marginBottom: '2.5rem' }}>

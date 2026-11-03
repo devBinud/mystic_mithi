@@ -10,8 +10,15 @@ export default function Footer() {
           <p className="mm-footer-tagline">Poetry and prose for the quiet, unspoken parts of you.</p>
 
           <ul className="mm-footer-links">
-            <li><Link to="/books">Books</Link></li>
             <li><Link to="/about">About</Link></li>
+            <li><Link to="/books">Books</Link></li>
+            <li><Link to="/poems">Published Poems</Link></li>
+            <li><Link to="/publications">Publications</Link></li>
+            <li><Link to="/interviews">Interviews</Link></li>
+            <li><Link to="/global-footprint">Global Footprint</Link></li>
+            <li><Link to="/awards">Awards</Link></li>
+            <li><Link to="/reviews">Reviews</Link></li>
+            <li><Link to="/gallery">Gallery</Link></li>
             <li><Link to="/faq">FAQ</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>
