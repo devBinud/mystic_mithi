@@ -11292,3 +11292,100 @@ main,
 .mm-about-influences p > span {
   white-space: nowrap;
 }
+
+/* ---------- Video review ---------- */
+.mm-video-review {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  align-items: center;
+  gap: 3.5rem;
+  max-width: 880px;
+  margin: 0 auto 4rem;
+}
+
+.mm-video-frame {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--plum-dark);
+  box-shadow: 0 30px 60px -20px rgba(78, 59, 87, 0.45);
+}
+
+.mm-video-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mm-video-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(58, 43, 66, 0.05) 40%, rgba(58, 43, 66, 0.65) 100%);
+}
+
+.mm-video-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  padding-left: 4px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 10px rgba(var(--primary-rgb), 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mm-video-cover:hover .mm-video-play,
+.mm-video-cover:focus-visible .mm-video-play {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 16px rgba(var(--primary-rgb), 0.2);
+}
+
+.mm-video-badge {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.mm-video-title {
+  margin: 0.5rem 0 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.mm-video-copy p {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-body);
+}
+
+@media (max-width: 720px) {
+  .mm-video-review {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .mm-video-frame {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}

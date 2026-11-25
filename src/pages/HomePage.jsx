@@ -14,6 +14,7 @@ import { getBooks } from '../admin/adminStore';
 import BookCard from '../components/BookCard';
 import { reviews, interviews, publishedPoems, awards, libraryFootprint, libraryCount, footprintMarkers } from '../data/portfolio';
 import FootprintGlobe from '../components/FootprintGlobe';
+import VideoTestimonial from '../components/VideoTestimonial';
 
 // Lines taken from the author's own notes on her books.
 const excerpts = [
@@ -405,6 +406,8 @@ export default function HomePage() {
               Hear from readers who found solace, beauty, and quiet healing in Madhushree Das’s published pages.
             </p>
           </div>
+
+          <VideoTestimonial />
 
           <ReviewSlider reviews={reviews} />
 

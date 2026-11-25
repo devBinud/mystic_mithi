@@ -78,6 +78,7 @@ function App() {
           <Route path="/global-footprint" element={<GlobalFootprintPage />} />
           <Route path="/faq" element={<FaqPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
 

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FaGoodreadsG } from 'react-icons/fa6';
 import PageHeader from '../components/PageHeader';
+import VideoTestimonial from '../components/VideoTestimonial';
 import { reviews, AUTHOR_LINKS } from '../data/portfolio';
 
 export default function ReviewsPage() {
@@ -10,6 +11,8 @@ export default function ReviewsPage() {
         <PageHeader eyebrow="READER EXPERIENCES" title="Reviews & Testimonials.">
           Words from readers who found solace, beauty and quiet healing in her pages.
         </PageHeader>
+
+        <VideoTestimonial />
 
         <div className="mm-review-grid">
           {reviews.map((r) => (
