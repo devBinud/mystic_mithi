@@ -19,6 +19,7 @@ import ReviewsPage from './pages/ReviewsPage'
 import GalleryPage from './pages/GalleryPage'
 import GlobalFootprintPage from './pages/GlobalFootprintPage'
 import CartDrawer from './components/CartDrawer'
+import CookieConsent from './components/CookieConsent'
 import ScrollReveal from './components/ScrollReveal'
 import AdminDashboard from './admin/AdminDashboard'
 import AdminLogin from './admin/AdminLogin'
@@ -86,6 +87,7 @@ function App() {
       <FloatingWidgets />
       <CartDrawer />
       <ScrollReveal />
+      <CookieConsent />
     </div>
   )
 }
