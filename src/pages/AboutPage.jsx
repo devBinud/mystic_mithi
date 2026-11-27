@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaInstagram, FaWhatsapp, FaFacebookF, FaCheck, FaEarthAmericas } from 'react-icons/fa6';
-import authorImg from '../assets/author.jpg';
+import authorImg from '../assets/updated-author.jpg';
 import { getBooks } from '../admin/adminStore';
 import BookCard from '../components/BookCard';
 import {
@@ -21,6 +21,7 @@ import { libraryFootprint, libraryCount } from '../data/portfolio';
 
 const PROFILE = [
   ['Name', AUTHOR.name],
+  ['Poetic name', AUTHOR.poeticName],
   ['Pen name', AUTHOR.penName],
   ['Profession', AUTHOR.profession],
   ['Nationality', AUTHOR.nationality],
@@ -53,7 +54,7 @@ export default function AboutPage() {
           <span className="insp-eyebrow">{AUTHOR.roles.toUpperCase()}</span>
           <h1 className="insp-section-title">{AUTHOR.name}.</h1>
           <p className="insp-section-subtitle">
-            Indian poet writing as {AUTHOR.penName}, known to her readers as Mystic Mithi.
+            Indian poet known to her readers as {AUTHOR.poeticName}, writing under the pen name {AUTHOR.penName}.
           </p>
         </header>
 

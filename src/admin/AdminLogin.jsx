@@ -34,7 +34,7 @@ export default function AdminLogin() {
     <div className="admin-login-container">
       <div className="admin-login-card">
         <div className="admin-login-header">
-          <Link to="/" className="admin-login-brand" aria-label="Mystic Mithi home">Mystic Mithi</Link>
+          <Link to="/" className="admin-login-brand" aria-label="Madhushree Das home">Madhushree Das</Link>
           <span className="admin-login-rule" aria-hidden="true" />
           <h1 className="admin-login-title">Admin Portal</h1>
         </div>

@@ -124,8 +124,8 @@ export default function Navbar() {
         <div className="header-content mm-header">
           <DesktopNav items={NAV_LEFT} className="mm-nav-left" />
 
-          <Link to="/" className="mm-logo" aria-label="Mystic Mithi home">
-            <span className="mm-logo-script">Mystic Mithi</span>
+          <Link to="/" className="mm-logo" aria-label="Madhushree Das home">
+            <span className="mm-logo-script">Madhushree Das</span>
           </Link>
 
           <DesktopNav items={NAV_RIGHT} className="mm-nav-right" />
@@ -160,7 +160,7 @@ export default function Navbar() {
       >
         <div className="drawer-header">
           <Link to="/" className="brand-wrapper" style={{ textDecoration: 'none' }} onClick={() => setMobileMenuOpen(false)}>
-            <span className="mm-logo-script mm-logo-drawer">Mystic Mithi</span>
+            <span className="mm-logo-script mm-logo-drawer">Madhushree Das</span>
           </Link>
 
           <button

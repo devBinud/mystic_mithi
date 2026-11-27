@@ -30,7 +30,7 @@ export default function BookDetailPage() {
   }
 
   return (
-    <div className="insp-page-wrapper" style={{ paddingTop: '2.5rem', paddingBottom: '6rem' }}>
+    <div className="insp-page-wrapper mm-paper" style={{ paddingTop: '2.5rem', paddingBottom: '6rem' }}>
       <div className="insp-container">
         {/* Breadcrumb */}
         <div style={{ marginBottom: '2rem' }}>
@@ -43,28 +43,8 @@ export default function BookDetailPage() {
         <div className="mm-book-detail-grid">
           {/* Left Column: Cover & Quick Buy */}
           <div>
-            <div
-              style={{
-                background: 'var(--bg-secondary)',
-                padding: '3rem 2rem',
-                borderRadius: '12px',
-                textAlign: 'center',
-                boxShadow: '0 20px 45px -10px rgba(0,0,0,0.12)',
-                position: 'relative'
-              }}
-            >
-              <img
-                src={book.image}
-                alt={book.title}
-                style={{
-                  width: '100%',
-                  maxWidth: '320px',
-                  borderRadius: '6px',
-                  boxShadow: '0 25px 50px -12px rgba(0,0,0,0.3)',
-                  display: 'block',
-                  margin: '0 auto'
-                }}
-              />
+            <div className="mm-detail-cover">
+              <img src={book.image} alt={book.title} className="mm-cover-img" />
             </div>
 
             {/* Guarantees Box */}

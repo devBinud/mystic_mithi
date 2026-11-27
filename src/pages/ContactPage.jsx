@@ -29,7 +29,7 @@ export default function ContactPage() {
           <span className="insp-eyebrow">GET IN TOUCH</span>
           <h1 className="insp-section-title">Let&rsquo;s Connect.</h1>
           <p className="insp-section-subtitle">
-            Have a question about an order, want to invite Mystic Mithi for a literary reading, or simply wish to share
+            Have a question about an order, want to invite Madhushree Das for a literary reading, or simply wish to share
             how a poem moved you? Send a note directly.
           </p>
         </header>

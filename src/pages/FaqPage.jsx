@@ -4,14 +4,14 @@ import { FaPlus } from 'react-icons/fa6';
 const faqs = [
   {
     q: 'Can I order author-signed copies directly through this website?',
-    a: 'Yes, absolutely! Every book ordered directly through our official website comes personally signed by Mystic Mithi, often with a unique hand-written inscription or bookmark from _Inkling Ink.'
+    a: 'Yes, absolutely! Every book ordered directly through our official website comes personally signed by Madhushree Das (Mystic Mithi), often with a unique hand-written inscription or bookmark from _Inkling Ink.'
   },
   {
     q: 'How long does delivery take across India?',
     a: 'Orders are processed and dispatched within 24–48 hours. Standard delivery takes 3 to 6 business days depending on your location, with real-time tracking provided via SMS and WhatsApp.'
   },
   {
-    q: 'Which book should I start with if I am new to Mystic Mithi?',
+    q: 'Which book should I start with if I am new to Mystic Mithi’s poetry?',
     a: 'Begin with "When the Mystic Meets a Starfish" — her first collection of mystical poems on love, life and inspiration, inspired by Rumi. If you are drawn to science, mythology and the wonder of the universe, "Caravan to the Cosmos" is the one for you.'
   },
   {

@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="insp-footer mm-footer">
       <div className="insp-container">
         <div className="mm-footer-main">
-          <span className="mm-logo-script mm-footer-logo">Mystic Mithi</span>
+          <span className="mm-logo-script mm-footer-logo">Madhushree Das</span>
           <p className="mm-footer-tagline">Poetry and prose for the quiet, unspoken parts of you.</p>
 
           <ul className="mm-footer-links">
@@ -41,7 +41,7 @@ export default function Footer() {
       </div>
 
       <div className="mm-footer-bottom">
-        <span>© {new Date().getFullYear()} Mystic Mithi · _Inkling Ink</span>
+        <span>© {new Date().getFullYear()} Madhushree Das · Mystic Mithi · _Inkling Ink</span>
         <span>
           Designed &amp; Developed by{' '}
           <a href="https://www.binudsoftwaresolutions.in" target="_blank" rel="noopener noreferrer">

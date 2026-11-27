@@ -13,7 +13,7 @@ export default function BooksPage() {
     : books.filter((b) => b.genre === selectedGenre);
 
   return (
-    <div className="insp-page-wrapper" style={{ paddingTop: '2.5rem', paddingBottom: '6rem' }}>
+    <div className="insp-page-wrapper mm-paper" style={{ paddingTop: '2.5rem', paddingBottom: '6rem' }}>
       <div className="insp-container">
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
@@ -22,7 +22,7 @@ export default function BooksPage() {
             EXPLORE THE BOOKS.
           </h1>
           <p className="insp-section-subtitle" style={{ margin: '0 auto', maxWidth: '650px' }}>
-            Immerse yourself in soul-stirring poetry, philosophical narratives, and reflective prose written by Mystic Mithi. Order your paperback or hardcover copy directly.
+            Immerse yourself in soul-stirring poetry, philosophical narratives, and reflective prose written by Madhushree Das (Mystic Mithi), published under her pen name _Inkling Ink. Order your paperback or hardcover copy directly.
           </p>
         </div>
 

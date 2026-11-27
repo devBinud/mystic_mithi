@@ -3,6 +3,7 @@
 export const AUTHOR = {
   name: 'Madhushree Das',
   roles: 'Poet · Author · Literary Creator',
+  poeticName: 'Mystic Mithi',
   penName: '_Inkling Ink',
   profession: 'Poet & Author',
   nationality: 'Indian',
@@ -81,7 +82,7 @@ export const COLLABORATIONS = [
 ];
 
 export const AUTHOR_STATEMENT =
-  'Poetry allows us to witness both the silence within and the vastness beyond. Every poem I write is an invitation to pause, reflect, and discover beauty in both the visible and the unseen. I hope that my words become companions to readers — offering comfort during uncertainty, courage during transformation, and wonder throughout life’s journey.';
+  'Poetry allows us to witness both the silence within and the vastness beyond. Every poem I write is an invitation to pause, reflect, and discover beauty in both the visible and the unseen. I hope that my words become companions to readers - offering comfort during uncertainty, courage during transformation, and wonder throughout life’s journey.';
 
 // Library of Congress Control Numbers for her two collections.
 export const LCCNS = ['2022482401', '2022482313'];

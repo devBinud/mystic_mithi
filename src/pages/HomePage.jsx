@@ -8,8 +8,9 @@ import {
   FaInstagram
 } from 'react-icons/fa6';
 
-import authorImg from '../assets/author.jpg';
+import authorImg from '../assets/updated-author.jpg';
 import caravanImg from '../assets/books/caravan_of_the_cosmos.jpeg';
+import starfishImg from '../assets/books/when_mystic_meets_starfish.jpeg';
 import { getBooks } from '../admin/adminStore';
 import BookCard from '../components/BookCard';
 import { reviews, interviews, publishedPoems, awards, libraryFootprint, libraryCount, footprintMarkers } from '../data/portfolio';
@@ -172,8 +173,14 @@ export default function HomePage() {
     <div className="insp-page-wrapper">
       {/* 1. HERO SECTION */}
       <section className="mm-hero">
-        <div className="mm-hero-media">
-          <img src={authorImg} alt="Author Mystic Mithi" />
+        <div className="mm-hero-left">
+          <div className="mm-hero-media">
+            <img src={authorImg} alt="Author Madhushree Das (Mystic Mithi)" />
+          </div>
+          <div className="mm-hero-name">
+            <h2>Madhushree Das</h2>
+            <p>Poet <span aria-hidden="true">|</span> Author <span aria-hidden="true">|</span> Literary Creator</p>
+          </div>
         </div>
         <div className="mm-hero-copy">
           <h1 className="mm-hero-title">
@@ -196,15 +203,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. HI, I'M MITHI */}
+      {/* 4. ABOUT INTRO */}
       <section className="mm-hello">
-        <div className="mm-hello-card">
-          <h2 className="mm-script mm-hello-title">Hi, I&rsquo;m Mithi.</h2>
-          <p>And I write for everyone who has ever felt a little too much.</p>
-        </div>
         <div className="mm-hello-body">
           <p>
-            I&rsquo;m <strong>Madhushree Das</strong>, an Indian poet writing as <strong>_Inkling Ink</strong>. An engineer by
+            I&rsquo;m <strong>Madhushree Das</strong> &mdash; <strong>Mystic Mithi</strong> to my readers &mdash; an Indian poet writing under the pen name <strong>_Inkling Ink</strong>. An engineer by
             degree, I found my true voice in poetry &mdash; in <em>When the Mystic Meets a Starfish</em> and
             <em> Caravan to the Cosmos</em>, now held in libraries across {libraryFootprint.length} countries.
           </p>
@@ -220,7 +223,7 @@ export default function HomePage() {
       </section>
 
       {/* 6. FEATURED BOOKS SHOWCASE */}
-      <section className="insp-journey-section mm-books">
+      <section className="insp-journey-section mm-books mm-paper">
         <div className="insp-container">
           <div className="mm-divider"><span>Explore the Books</span></div>
 
@@ -233,9 +236,9 @@ export default function HomePage() {
       </section>
 
       {/* 2. MY LATEST BOOK */}
-      <section className="insp-walkaway-section">
+      <section className="insp-walkaway-section mm-paper">
         <div className="insp-container">
-          <h2 className="mm-script mm-section-script">My Latest Book</h2>
+          <h2 className="mm-script mm-section-script">My Latest Poetry Publication</h2>
           <div className="insp-walkaway-grid">
             <div className="insp-walkaway-visual">
               <div className="insp-book-mockup-wrapper">
@@ -286,6 +289,67 @@ export default function HomePage() {
               </ul>
 
               <Link to="/books/caravan-to-the-cosmos" className="btn-insp-primary">
+                Get the Book
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MY DEBUT BOOK */}
+      <section className="insp-walkaway-section mm-paper mm-debut-section">
+        <div className="insp-container">
+          <h2 className="mm-script mm-section-script">My Debut Poetry Publication</h2>
+          <div className="insp-walkaway-grid mm-debut-grid">
+            <div className="insp-walkaway-visual">
+              <div className="insp-book-mockup-wrapper">
+                <Link to="/books/when-the-mystic-meets-a-starfish">
+                  <img
+                    src={starfishImg}
+                    alt="When the Mystic Meets a Starfish"
+                    className="insp-book-mockup-img"
+                  />
+                </Link>
+              </div>
+            </div>
+
+            <div className="insp-walkaway-right">
+              <h3 className="mm-book-title">
+                When the Mystic
+                <span className="mm-script">Meets a Starfish</span>
+              </h3>
+              <p className="insp-section-subtitle">
+                A collection of stirring, enchanting poems of mystical love, life and inspiration &mdash; written under
+                the pen name _Inkling Ink as a panacea for every aching heart that has lost its hope in divinity.
+              </p>
+
+              <ul className="insp-checklist">
+                <li className="insp-checklist-item">
+                  <FaCheck className="insp-check-icon" size={16} />
+                  <div>
+                    <strong style={{ color: 'var(--text-heading)' }}>Inspired by Rumi:</strong> Poems carrying the
+                    grace and magic of Jalāl ad-Dīn Rūmī&rsquo;s mystical verse.
+                  </div>
+                </li>
+
+                <li className="insp-checklist-item">
+                  <FaCheck className="insp-check-icon" size={16} />
+                  <div>
+                    <strong style={{ color: 'var(--text-heading)' }}>The Deepness:</strong> An invitation to dive deep
+                    &mdash; for getting a pearl, you have to dive into the deep ocean.
+                  </div>
+                </li>
+
+                <li className="insp-checklist-item">
+                  <FaCheck className="insp-check-icon" size={16} />
+                  <div>
+                    <strong style={{ color: 'var(--text-heading)' }}>Mystical light:</strong> Verses that traverse the
+                    infinite darkness toward a light that lasts till eternity.
+                  </div>
+                </li>
+              </ul>
+
+              <Link to="/books/when-the-mystic-meets-a-starfish" className="btn-insp-primary">
                 Get the Book
               </Link>
             </div>
@@ -425,7 +489,7 @@ export default function HomePage() {
           <div className="insp-letter-grid">
             <div className="insp-letter-intro">
               <span className="insp-eyebrow">GET IN TOUCH</span>
-              <h2 className="insp-letter-heading">Contact Mystic Mithi</h2>
+              <h2 className="insp-letter-heading">Contact Madhushree Das</h2>
               <p className="insp-letter-lead">
                 For book orders, events, interviews, or a note about her work. Every message is read and answered
                 personally.

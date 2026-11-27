@@ -1,6 +1,6 @@
 // Content for the portfolio sections (poems, interviews, publications, awards, reviews, gallery).
 // Fields left empty are hidden on the site, so an entry can go live before every detail is known.
-import authorImg from '../assets/author.jpg';
+import authorImg from '../assets/updated-author.jpg';
 import starfishImg from '../assets/books/when_mystic_meets_starfish.jpeg';
 import caravanImg from '../assets/books/caravan_of_the_cosmos.jpeg';
 import poetryContestCertificate from '../assets/international_poem_certificate.jpeg';
@@ -148,7 +148,7 @@ export const reviews = [
 
 // TODO: add photos from readings, launches and events
 export const gallery = [
-  { id: 'author', src: authorImg, alt: 'Mystic Mithi', caption: 'Mystic Mithi' },
+  { id: 'author', src: authorImg, alt: 'Madhushree Das (Mystic Mithi)', caption: 'Madhushree Das · Mystic Mithi' },
   { id: 'starfish', src: starfishImg, alt: 'When the Mystic Meets a Starfish, book cover', caption: 'When the Mystic Meets a Starfish' },
   { id: 'caravan', src: caravanImg, alt: 'Caravan to the Cosmos, book cover', caption: 'Caravan to the Cosmos' }
 ];

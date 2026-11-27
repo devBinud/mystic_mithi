@@ -8,7 +8,7 @@ export default function PoemsPage() {
     <div className="insp-page-wrapper mm-section-page">
       <div className="insp-container">
         <PageHeader eyebrow="IN PRINT" title="Published Poems.">
-          Individual poems by Mystic Mithi that have found a home in literary magazines and journals.
+          Individual poems by Madhushree Das (Mystic Mithi) that have found a home in literary magazines and journals.
         </PageHeader>
 
         <div className="mm-poem-list">

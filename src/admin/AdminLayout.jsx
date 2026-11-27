@@ -75,8 +75,8 @@ export default function AdminLayout({ children, activeSection = 'dashboard' }) {
         {/* Left Sidebar */}
         <aside className={`admin-sidebar ${sidebarOpen ? 'mobile-open' : ''}`}>
           <div className="admin-sidebar-header">
-            <Link to="/admin" className="admin-sidebar-brand" aria-label="Mystic Mithi admin home">
-              <span className="admin-sidebar-logo">Mystic Mithi</span>
+            <Link to="/admin" className="admin-sidebar-brand" aria-label="Madhushree Das admin home">
+              <span className="admin-sidebar-logo">Madhushree Das</span>
             </Link>
             <button
               className="admin-sidebar-close-btn"
@@ -140,7 +140,7 @@ export default function AdminLayout({ children, activeSection = 'dashboard' }) {
                 <FaUserShield size={14} />
               </div>
               <div className="admin-user-info">
-                <span className="admin-user-name" style={{ fontSize: '0.85rem', fontWeight: 700 }}>Mystic Mithi</span>
+                <span className="admin-user-name" style={{ fontSize: '0.85rem', fontWeight: 700 }}>Madhushree Das</span>
                 <span className="admin-user-role" style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Author & Publisher</span>
               </div>
             </div>
@@ -162,8 +162,8 @@ export default function AdminLayout({ children, activeSection = 'dashboard' }) {
           <header className="admin-topbar">
             <div className="admin-topbar-left">
               {/* Shown instead of the breadcrumb while the sidebar is hidden (tablet / phone) */}
-              <Link to="/admin" className="admin-topbar-brand" aria-label="Mystic Mithi admin home">
-                <span className="admin-sidebar-logo">Mystic Mithi</span>
+              <Link to="/admin" className="admin-topbar-brand" aria-label="Madhushree Das admin home">
+                <span className="admin-sidebar-logo">Madhushree Das</span>
               </Link>
               <div className="admin-page-breadcrumb">
                 <span className="breadcrumb-parent">Admin Portal</span>
@@ -202,7 +202,7 @@ export default function AdminLayout({ children, activeSection = 'dashboard' }) {
             </div>
             <h2 id="admin-confirm-title" className="admin-confirm-title">Leave the admin portal?</h2>
             <p className="admin-confirm-text">
-              You&rsquo;ll be taken to the public Mystic Mithi website. You&rsquo;ll stay signed in, so you can come back to the dashboard anytime.
+              You&rsquo;ll be taken to the public Madhushree Das website. You&rsquo;ll stay signed in, so you can come back to the dashboard anytime.
             </p>
             <div className="admin-confirm-actions">
               <button type="button" className="btn-insp-secondary" onClick={() => setConfirmLeave(false)}>

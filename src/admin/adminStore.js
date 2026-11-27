@@ -109,7 +109,7 @@ export function addBook(newBookData) {
     title: newBookData.title || 'Untitled Book',
     subtitle: newBookData.subtitle || '',
     genre: newBookData.genre || 'General Literature',
-    author: newBookData.author || 'Mystic Mithi',
+    author: newBookData.author || '_Inkling Ink',
     price: Number(newBookData.price) || 299,
     originalPrice: Number(newBookData.originalPrice) || Number(newBookData.price) || 399,
     rating: Number(newBookData.rating) || 5.0,

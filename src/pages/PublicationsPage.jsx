@@ -8,7 +8,7 @@ export default function PublicationsPage() {
     <div className="insp-page-wrapper mm-section-page">
       <div className="insp-container mm-narrow">
         <PageHeader eyebrow="BIBLIOGRAPHY" title="Literary Publications.">
-          The complete record of Mystic Mithi&rsquo;s published work, from poetry collections to poems in print.
+          The complete record of Madhushree Das&rsquo;s published work, from poetry collections to poems in print.
         </PageHeader>
 
         <ol className="mm-pub-list">

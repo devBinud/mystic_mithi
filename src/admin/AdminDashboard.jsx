@@ -37,7 +37,7 @@ export default function AdminDashboard({ section = 'dashboard' }) {
   // Settings State
   const [settingsSaved, setSettingsSaved] = useState(false);
   const [authorSettings, setAuthorSettings] = useState({
-    authorName: 'Mystic Mithi',
+    authorName: '_Inkling Ink',
     imprintName: '',
     phone: '+91 70029 74378',
     whatsapp: '+91 70029 74378',
@@ -552,7 +552,7 @@ export default function AdminDashboard({ section = 'dashboard' }) {
                           <td style={{ padding: '1rem', textAlign: 'right' }}>
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
                               <a
-                                href={`https://wa.me/${order.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ${order.customerName}, this is Mystic Mithi's publishing desk regarding your order #${order.id} for "${order.bookTitle}".`)}`}
+                                href={`https://wa.me/${order.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ${order.customerName}, this is Madhushree Das's (Mystic Mithi) publishing desk regarding your order #${order.id} for "${order.bookTitle}".`)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Contact on WhatsApp"

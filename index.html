@@ -17,7 +17,7 @@
 
   <!-- Open Graph / WhatsApp / Social Preview -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Mystic Mithi — Author & Online Book Store" />
+  <meta property="og:site_name" content="Madhushree Das (Mystic Mithi) — Author & Online Book Store" />
   <meta property="og:title" content="Madhushree Das (Mystic Mithi) — Poet, Author & Official Book Store" />
   <meta property="og:description"
     content="Poetry by Madhushree Das (_Inkling Ink): When the Mystic Meets a Starfish and Caravan to the Cosmos, held in libraries from Harvard to Oxford. Order online with doorstep delivery." />
@@ -63,7 +63,7 @@
       display: block;
       padding: 0 0.2em;
       font-family: 'Great Vibes', 'Brush Script MT', cursive;
-      font-size: clamp(3.2rem, 9vw, 5rem);
+      font-size: clamp(2.8rem, 9vw, 5rem);
       line-height: 1.25;
       color: #FFFFFF;
       white-space: nowrap;
@@ -94,8 +94,10 @@
     .mm-pl-tag {
       font-family: 'Josefin Sans', 'Lato', sans-serif;
       font-size: 0.72rem;
-      letter-spacing: 0.4em;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
+      text-align: center;
+      padding: 0 16px;
       color: rgba(255, 255, 255, 0.7);
       opacity: 0;
       transform: translateY(6px);
@@ -128,9 +130,11 @@
 <body>
   <div id="mm-preloader" aria-hidden="true">
     <div class="mm-pl-sign">
-      <span class="mm-pl-logo">Mystic Mithi</span>
+      <span class="mm-pl-logo">Madhushree Das</span>
       <span class="mm-pl-nib"></span>
     </div>
+    <div class="mm-pl-rule"></div>
+    <div class="mm-pl-tag">Mystic Mithi &middot; _Inkling Ink</div>
   </div>
   <script>
     // Start writing the signature only once its font has loaded (capped so a slow network never stalls the page),
@@ -141,7 +145,7 @@
       var HOLD_MS = 450;
       var preloader = document.getElementById('mm-preloader');
       var fontReady = document.fonts && document.fonts.load
-        ? document.fonts.load('1em "Great Vibes"', 'Mystic Mithi').catch(function () {})
+        ? document.fonts.load('1em "Great Vibes"', 'Madhushree Das').catch(function () {})
         : Promise.resolve();
       var fontTimeout = new Promise(function (resolve) { setTimeout(resolve, FONT_TIMEOUT_MS); });
       window.mmPreloaderShown = Promise.race([fontReady, fontTimeout]).then(function () {
